@@ -39,26 +39,24 @@ values={}
 #Plot them
 res = pd.DataFrame(columns=["Algorithm","Population","BadDevices","NetSize","MaxPar","Chunk count","Completion time(s)"])
 cpt = 0
-for al in df['NetSize'].unique():
-    df2 = df[df['NetSize']==al]
+for ns in df['NetSize'].unique():
+    df2 = df[df['NetSize']==ns]
     del df2['NetSize']
-    for ns in df2['NetSize'].unique(): # NetSize
-        df3 = df2[df2['NetSize']==ns]
-        del df3['NetSize']
-        for mp in df3['MaxPar'].unique(): # MaxPar
-
-            df4 = df3[df3['MaxPar']==mp] 
-            del df4['MaxPar']
-            for cs in df4['Chunk count'].unique(): #ChunkSize
-              
-                df5 = df4[df4['Chunk count'] == cs]
-                del df5['Chunk count']
-                for p in df5['Population'].unique(): #Population
-                    df6 = df5[df5["Population"]==p]
-                    del df6['Population']
-                    for bp in df6['BadDevices'].unique():#BadRepartition
-                        df7 = df6[df6['BadDevices']==bp]
-                        del df7['BadDevices']
+    for mp in df2['MaxPar'].unique(): # NetSize
+        df3 = df2[df2['MaxPar']==mp]
+        del df3['MaxPar']
+        for cs in df3['Chunk count'].unique(): # MaxPar
+            df4 = df3[df3['Chunk count']==cs] 
+            del df4['Chunk count']
+            for p in df4['Population'].unique(): #ChunkSize
+                df5 = df4[df4['Population'] == p]
+                del df5['Population']
+                for bp in df5['BadDevices'].unique(): #Population
+                    df6 = df5[df5["BadDevices"]==bp]
+                    del df6['BadDevices']
+                    for al in df6['Algorithm'].unique():#BadRepartition
+                        df7 = df6[df6['Algorithm']==al]
+                        del df7['Algorithm']
                         del df7['Experiment']
                         m = float(df7.mean())
                         res.loc[cpt]=[al,p,bp,ns,mp,cs,m]
