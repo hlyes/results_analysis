@@ -84,6 +84,7 @@ for ns in df['NetSize'].unique():
                 columns=[dfs[k] for k in column_names]
 
                 res2 = pd.concat(columns,axis=1)
+                res2.to_csv(folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
                 Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
             for bp in res["BadDevices"].unique():
                 res2 = res[res["BadDevices"]==bp]
@@ -112,6 +113,7 @@ for ns in df['NetSize'].unique():
                 del res2['Algorithm']
                 print res2
                 res2 = pd.concat(columns,axis=1)
+                res2.to_csv(folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
                 Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
             
     
