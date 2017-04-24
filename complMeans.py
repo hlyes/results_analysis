@@ -61,21 +61,36 @@ for ns in df['NetSize'].unique():
                         m = float(df7.mean())
                         res.loc[cpt]=[al,p,bp,ns,mp,cs,m]
                         cpt+=1
-                    res2 = res[res["Population"]==p]
-                    res2 = res2[res2["Chunk count"]==cs]
-                    res2 = res2[res2["NetSize"]==ns]
-                    res2 = res2[res2["MaxPar"]==mp] 
-                    del res2['Population']
-                    del res2['Chunk count']
-                    del res2['MaxPar']
-                    del res2['NetSize']
-                    #res2 = res2[['BadDevices','Algorithm','Completion time(s)']]
+                res2 = res[res["Population"]==p]
+                res2 = res2[res2["Chunk count"]==cs]
+                res2 = res2[res2["NetSize"]==ns]
+                res2 = res2[res2["MaxPar"]==mp] 
+                del res2['Population']
+                del res2['Chunk count']
+                del res2['MaxPar']
+                del res2['NetSize']
+                #res2 = res2[['BadDevices','Algorithm','Completion time(s)']]
+                res2 = res2
+                res2.index = res2['Algorithm']
+                # print "\n"
+                # print res2
+                # print "\n"
+                dfs={}
+                for al in df["Algorithm"].unique():
+                    d = res2[res2['Algorithm']==al]
+                    del d["Algorithm"]
+                    d.index = d['BadDevices']
+                    del d['BadDevices']
+                    d.rename(columns={"Completion time(s)":al},inplace=True)
+                    dfs[al]=d
+                
+                column_names=dfs.keys()
+                columns=[dfs[k] for k in column_names]
 
-                    print "\n"
-                    print res2
-                    print "\n"
+                res2 = pd.concat(columns,axis=1)
+                print res2
 
-                    Plot.plot_bar(res2,folder+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)','use_index':True,'pos_index':0})
+                Plot.plot_bar(res2,folder+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
 
 
 
