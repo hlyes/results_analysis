@@ -34,33 +34,52 @@ print df.columns
 
 values={}
 
-for al in df['Algorithm'].unique():
-    df2 = df[df['Algorithm']==al]
-    values[al]={}
-    del df2['Algorithm']
-    for p in df2['Population'].unique():
-        df3 = df2[df2['Population']==p]
-        values[al][p]={}
-        del df3['Population']
-        for bp in df3['BadDevices'].unique():
-            values[al][p][bp]={}
-            df4 = df3[df3['BadDevices']==bp]
-            del df4['BadDevices']
-            for ns in df4['NetSize'].unique():
-                values[al][p][bp][ns]={}
-                df5 = df4[df4['NetSize'] == ns]
-                del df5['NetSize']
-                for mp in df5['MaxPar'].unique():
-                    values[al][p][bp][ns][mp]={}
-                    df6 = df5[df5["MaxPar"]==mp]
-                    del df6['MaxPar']
-                    for cs in df6['Chunk count'].unique():                        
-                        df7 = df6[df6['Chunk count']==cs]
-                        del df7['Chunk count']
+
+#Get vaues
+#Plot them
+res = pd.DataFrame(columns=["Algorithm","Population","BadDevices","NetSize","MaxPar","Chunk count","Completion time(s)"])
+cpt = 0
+for al in df['NetSize'].unique():
+    df2 = df[df['NetSize']==al]
+    del df2['NetSize']
+    for ns in df2['NetSize'].unique(): # NetSize
+        df3 = df2[df2['NetSize']==ns]
+        del df3['NetSize']
+        for mp in df3['MaxPar'].unique(): # MaxPar
+
+            df4 = df3[df3['MaxPar']==mp] 
+            del df4['MaxPar']
+            for cs in df4['Chunk count'].unique(): #ChunkSize
+              
+                df5 = df4[df4['Chunk count'] == cs]
+                del df5['Chunk count']
+                for p in df5['Population'].unique(): #Population
+                    df6 = df5[df5["Population"]==p]
+                    del df6['Population']
+                    for bp in df6['BadDevices'].unique():#BadRepartition
+                        df7 = df6[df6['BadDevices']==bp]
+                        del df7['BadDevices']
                         del df7['Experiment']
                         m = float(df7.mean())
-                        values[al][p][bp][ns][mp][cs]=m
-                    
+                        res.loc[cpt]=[al,p,bp,ns,mp,cs,m]
+                        cpt+=1
+                    res2 = res[res["Population"]==p]
+                    res2 = res2[res2["Chunk count"]==cs]
+                    res2 = res2[res2["NetSize"]==ns]
+                    res2 = res2[res2["MaxPar"]==mp] 
+                    del res2['Population']
+                    del res2['Chunk count']
+                    del res2['MaxPar']
+                    del res2['NetSize']
+                    #res2 = res2[['BadDevices','Algorithm','Completion time(s)']]
+
+                    print "\n"
+                    print res2
+                    print "\n"
+
+                    Plot.plot_bar(res2,folder+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)','use_index':True,'pos_index':0})
 
 
-print values
+
+#print res
+res.to_csv(folder+os.sep+"completionMeans.csv",sep=",")

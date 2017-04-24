@@ -143,7 +143,7 @@ class Plot(object):
 		if rotation is None :
 			rotation = 'horizontal'
 
-		plot = df.plot.hist(layout=(1,2))
+		plot = df.plot.hist(layout=(1,2),use_index=use_index)
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
 		plt.ylabel(yaxis_label)
 		#plot.set_ylim(plot.get_ylim()+25)
@@ -178,12 +178,61 @@ class Plot(object):
 			xaxis_label = default_xaxis_label
 
 		if yaxis_label is None :
-			yaxis_label = 'Y'
+			yaxis_label = default_yaxis_label
 
 		if rotation is None :
 			rotation = 'horizontal'
 
 		plot = df.plot.box()
+		plt.ylabel(yaxis_label)
+		plt.xlabel(xaxis_label)
+		plt.xticks(rotation="horizontal")
+		fig = plt.gcf()
+		fig.set_size_inches(8 , 5)
+		fig.savefig(output_file,dpi=300)
+		return plot
+
+
+	@staticmethod
+	def plot_bar(df,output_file,params):
+
+		font = Plot.getParam('font',params)
+		use_index = Plot.getParam('use_index',params)
+		put_markers = Plot.getParam('put_markers',params)
+		yaxis_label = Plot.getParam('yaxis_label',params)
+		xaxis_label = Plot.getParam('xaxis_label',params)
+		rotation = Plot.getParam('rotation',params)
+		index_name = Plot.getParam('index_name',params)
+		pos_index = Plot.getParam('pos_index',params)
+
+		if pos_index is None:
+			pos_index = 0
+
+		if font is None :
+			font = default_font
+
+		if use_index is None :
+			use_index = False
+
+		if put_markers is None :
+			put_markers = True
+
+		if xaxis_label is None :
+			xaxis_label = default_xaxis_label
+
+		if yaxis_label is None :
+			yaxis_label = default_yaxis_label
+
+		if rotation is None :
+			rotation = 'horizontal'
+		df = df.T
+		if use_index:
+
+			index = df[df.columns[pos_index]]
+			df.index = index
+
+
+		plot = df.plot.bar()
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
 		plt.xticks(rotation="horizontal")
