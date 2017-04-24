@@ -62,7 +62,7 @@ class Plot(object):
 			font = default_font
 
 		if use_index is None :
-			use_index = True
+			use_index = False
 
 		if put_markers is None :
 			put_markers = False
@@ -225,7 +225,7 @@ class Plot(object):
 
 		if rotation is None :
 			rotation = 'horizontal'
-		df = df.T
+
 		if use_index:
 
 			index = df[df.columns[pos_index]]
