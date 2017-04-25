@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
+import gc
 
 ##Default font of teh plots
 default_font = {'family' : 'normal' ,
@@ -109,8 +110,9 @@ class Plot(object):
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
-		return plot
-
+		plt.close()
+		gc.collect()
+		pass
 
 	@staticmethod
 	def plot_hist(df,output_file,params):
@@ -151,7 +153,9 @@ class Plot(object):
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
-		return plot
+		plt.close()
+		gc.collect()
+		pass
 
 
 	@staticmethod
@@ -190,7 +194,9 @@ class Plot(object):
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
-		return plot
+		plt.close()
+		gc.collect()
+		pass
 
 
 	@staticmethod
@@ -239,7 +245,9 @@ class Plot(object):
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
-		return plot
+		gc.collect()
+		pass
+
 
 
 	@staticmethod
@@ -248,4 +256,4 @@ class Plot(object):
 		params= {'yaxis_label' : 'State' , 'yticks_labels': [ 'OFF' , 'GOOD' , 'BAD' ]
 		, 'yticks' : [0, 1, 2] }
 		#params['yrotation'] = 'vertical'
-		return Plot.plot_lines(df,output_file,params)
+		gc.collect().plot_lines(df,output_file,params)
