@@ -23,6 +23,7 @@ Completed Nodes All+ Good + Bad: - "nodesCompletion.csv"
 Algorithm,NetSize,Chunk count,Population,MaxPar,D2D,BW_STRATEGY,Experiment,Completion time
 
 """
+drawAll=True
 maxR=11
 for s in sizes:
     for cs in chunkCounts:
@@ -52,7 +53,7 @@ for s in sizes:
 
                             completionDFS=[]
                             filenames=[]
-                            if True:
+                            if drawAll:
                                 for i in range(1,maxR):
                                     f=filepath+"-"+str(i)+"-nodesCompletion.csv"
                                     filenames.append(f)

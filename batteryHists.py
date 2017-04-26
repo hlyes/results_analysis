@@ -85,7 +85,7 @@ for size in netsize:
                     res= res
                     res = res
                     print res
-                    #plot_hist(res,filename+"-batHist.eps","Batterie restante(h)")
+                    Plot.plot_bar(res/3600 ,filename+"-batHist.eps",{'yaxis_label':"Batterie restante(h)"})
                     
                 keys=difs.keys()
                 keys.sort()
@@ -106,4 +106,4 @@ for size in netsize:
                 #out.reindex(out.index.drop(1))
                 out.index=out[out.columns[0]]
                 print out
-                #plot_hist(out,str(netsize)+"-"+str(maxPara)+"-batHist.eps","Difference de batterie restante (h)")
+                Plot.plot_bar(out,str(size)+"-"+str(maxN)+"-batHist.eps",{'yaxis_label':"Difference de batterie restante (h)"})
