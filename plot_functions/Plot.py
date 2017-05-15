@@ -256,4 +256,6 @@ class Plot(object):
 		params= {'yaxis_label' : 'State' , 'yticks_labels': [ 'OFF' , 'GOOD' , 'BAD' ]
 		, 'yticks' : [0, 1, 2] }
 		#params['yrotation'] = 'vertical'
-		gc.collect().plot_lines(df,output_file,params)
+		Plot.plot_lines(df,output_file,params)
+		gc.collect()
+	
