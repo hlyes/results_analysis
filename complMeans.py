@@ -8,11 +8,11 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-algorithms=['simu','simu2']
+algorithms=['simu','simu2','simu3','simu4']
 sizes=[201,101]
 chunkCounts=[10]
 repartitions=[10,20,30,40]#,'10bw', '20bw' ,'30bw' ,'40bw']
-bad_repartition=[10,20]
+bad_repartition=[10,20,30,40]
 maxNodes=[17,33]
 maxExp=11
 
@@ -54,7 +54,9 @@ for ns in df['NetSize'].unique():
                 for bp in df5['BadDevices'].unique(): #Population
                     df6 = df5[df5["BadDevices"]==bp]
                     del df6['BadDevices']
+                    
                     for al in df6['Algorithm'].unique():#BadRepartition
+                        print al
                         df7 = df6[df6['Algorithm']==al]
                         del df7['Algorithm']
                         del df7['Experiment']

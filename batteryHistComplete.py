@@ -2,24 +2,24 @@
 from plot_functions.Plot import *
 
 proportions=[10,20,30,40]
-bad_proportions=[10,20]
+bad_proportions=[10,20,30,40]
 netsize=[101,201]
 maxPara=[17,33]
 chunksize=[10]
-algorithms=["simu","simu2"]
+algorithms=["simu","simu2","simu3","simu4"]
 experiment_range= range(1,11)
-folder="bench2.1"+os.sep+"out"
+folder="bench2"+os.sep+"out"
 file_suffix="-finalBatt.csv";
-difs={}
+
 for size in netsize:
     for maxN in maxPara:
         for cs in chunksize:
             for p in proportions:
                 for bp in bad_proportions:
                     simu=None
-                    simu2=None
+                    simu2=[]
                     suffix=str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+"-"+str(bp)
-                
+                    
                     for a in algorithms:
                         filename=folder+os.sep+str(p)+os.sep+a+"-"+suffix
                         files=[]
@@ -30,8 +30,13 @@ for size in netsize:
                             cf=""
                             for f in files:
                                 cf=f
-                                df =pd.read_csv(f,sep=",")
-                                dfs.append(df)
+                                try:
+                                    df =pd.read_csv(f,sep=",")    
+                                except pd.io.common.EmptyDataError as e:
+    
+                                    print "Empty data error for : "+ f
+                                else:
+                                    dfs.append(df)
                                 #print df.columns
                         except IOError:
                             print "IOError ===>"+cf
@@ -66,44 +71,47 @@ for size in netsize:
                             res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                             simu=res
                         else:
-                            res= pd.DataFrame(columns=["simu2"],data=[[nmean],[bad10],[worst]])
-                            simu2=res
+                            res= pd.DataFrame(columns=[a],data=[[nmean],[bad10],[worst]])
+                            simu2.append(res)
                     
                     
-                    res = pd.concat([simu,simu2],axis=1)
-                    #print simu
-                    #print simu2
-                   
-                    #res.rename(columns={1:"AINA",2:"simu2ous"},inplace=True)
-                    diff = pd.DataFrame( res['simu2'] -  res["simu"] )
-                    print diff.T
-                    res = res.T
-                    difs[p]=diff
-                    res.rename(columns={0:"Moyennne",1:"Mauvais",2:"Pire"},inplace=True)
-                    res = res[1:]
-                    #print res
-                    res= res
-                    res = res
-                    print res
-                    #plot_hist(res,filename+"-batHist.eps","Batterie restante(h)")
+                    res = pd.concat([simu]+simu2,axis=1)
                     
-                keys=difs.keys()
-                keys.sort()
+                    index = res['Categorie']
+                    res.index = index
+                    
+                    columns = []
+                    for a2 in algorithms[1:]:
+                        diff = pd.DataFrame( res[a2] -  res["simu"] )
+                        diff.rename(columns = {0:a2},inplace=True)
+                        columns.append(diff)
+                    
+
+                    res2 = pd.concat(columns,axis=1)
+                    res2 = res2/60
+                    res2.to_csv(folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+".csv",sep=",")
+                    Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                    print res2
+                                   
 
 
-                vals=[]
-                for d in keys: 
-                    difs[d].rename(columns={0:str(d)+"%"}, inplace=True)
-                    key=str(d)+"%"
-                    val=[key]
-                    for v in difs[d].values:
-                        val.append(v[0]/3600)
-                    vals.append(val)
+                # keys=difs.keys()
+                # keys.sort()
 
-                out = pd.DataFrame(columns=["% de mauvais",'Moyenne','Mauvais','Pire'],data=vals)
-                #out = out/3600
-                out.rename(columns={0:"10%",1:"20%"},inplace=True)
-                #out.reindex(out.index.drop(1))
-                out.index=out[out.columns[0]]
-                print out
-                #plot_hist(out,str(netsize)+"-"+str(maxPara)+"-batHist.eps","Difference de batterie restante (h)")
+
+                # vals=[]
+                # for d in keys: 
+                #     difs[d].rename(columns={0:str(d)+"%"}, inplace=True)
+                #     key=str(d)+"%"
+                #     val=[key]
+                #     for v in difs[d].values:
+                #         val.append(v[0]/3600)
+                #     vals.append(val)
+
+                # out = pd.DataFrame(columns=["% de mauvais",'Moyenne','Mauvais','Pire'],data=vals)
+                # #out = out/3600
+                # out.rename(columns={0:"10%",1:"20%"},inplace=True)
+                # #out.reindex(out.index.drop(1))
+                # out.index=out[out.columns[0]]
+                # print out
+                # #plot_hist(out,str(netsize)+"-"+str(maxPara)+"-batHist.eps","Difference de batterie restante (h)")
