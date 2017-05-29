@@ -2,10 +2,10 @@
 from plot_functions.Plot import *
 
 sizes=[101,201]
-algorithms=["simu","simu2"]
+algorithms=["simu","simu2","simu3","simu4"]
 chunkCounts=[10]
 repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
-bad_repartions=[10,20]
+bad_repartions=[10,20,30,40]
 maxNodes=[17,33]
 
 folder="" # Needs to be replaced by sys.argv[1]
@@ -23,7 +23,9 @@ for size in sizes:
 	            for maxN in maxNodes:
 	                simu=None
 	                simu2=None
-	                
+	                simu3=None
+	                simu4=None
+
 	                hoMin=None
 	                hoMax=None
 	                hoAvg=None
@@ -31,11 +33,20 @@ for size in sizes:
 	                hetMin=None
 	                hetMax=None
 	                hetAvg=None
+
+	                s3Min=None
+	                s3Max=None
+	                s3Avg=None
+
+	                s4Min=None
+	                s4Max=None
+	                s4Avg=None
 	            
 
 	                suffix=str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(r)+"-"+str(br)
 	                for algo in algorithms:
-	                	filename=folder+os.sep+"out"+os.sep+str(r)+os.sep+algo+"-"+suffix
+	                    filename=""
+	                    filename=folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix
 	                    print filename
 	                    filenames=[]
 	                    for i in range(1,11):
@@ -74,9 +85,13 @@ for size in sizes:
 	                    MinRes.to_csv(filename+"-minBatt.csv")
 	                    if (algo == "simu"):
 	                        hoMin=MinRes
-	                    else:
+	                    elif algo=="simu2":
 	                        hetMin=MinRes
-	                
+	                    elif algo == "simu3":
+	                    	s3Min = MinRes
+	                    else:
+	                    	s4Min = MinRes
+
 	                    Plot.plot_lines(MinRes,filename+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})    
 	                    print filename+".csv"
 	                    MinRes.to_csv(filename+"-minBat.csv",sep=',')
@@ -89,8 +104,12 @@ for size in sizes:
 	                    MaxRes.to_csv(filename+"-maxBatt.csv")
 	                    if (algo == "simu"):
 	                        hoMax=MaxRes
-	                    else:
+	                    elif algo=="simu2":
 	                        hetMax=MaxRes
+	                    elif algo == "simu3":
+	                    	s3Max = MaxRes
+	                    else:
+	                    	s4Max = MaxRes
 	                
 	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})    
 	                    print filename+".csv"
@@ -104,9 +123,13 @@ for size in sizes:
 	                    AvgRes.to_csv(filename+"-avgBatt.csv")
 	                    if (algo == "simu"):
 	                        hoAvg=AvgRes
-	                    else:
+	                    elif algo=="simu2":
 	                        hetAvg=AvgRes
-	                
+	                    elif algo == "simu3":
+	                    	s3Avg = AvgRes
+	                    else:
+	                    	s4Avg = AvgRes
+
 	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})      
 	                    print filename+".csv"
 	                    AvgRes.to_csv(filename+"-avgBat.csv",sep=',')
@@ -128,11 +151,23 @@ for size in sizes:
 	                simu2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.csv",sep=",")
 	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})    
 	                
+	                simu3=pd.concat([s3Min,s3Max,s3Avg],axis=1)
+	                simu3.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+	                simu3=simu3.fillna(method='ffill')
+	                simu3.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu3-"+suffix+"-bAvg.csv",sep=",")
+	                Plot.plot_lines(simu3,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu3-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                
+	                simu4=pd.concat([s4Min,s4Max,s4Avg],axis=1)
+	                simu4.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+	                simu4=simu4.fillna(method='ffill')
+	                simu4.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu4-"+suffix+"-bAvg.csv",sep=",")
+	                Plot.plot_lines(simu4,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu4-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                
 	                
 	                
 	                hoMin= hoMin
 	                hetMin= hetMin
-	                res2 = pd.concat([hoMin,hetMin],axis=1)
+	                res2 = pd.concat([hoMin,hetMin,s3Min,s4Min],axis=1)
 	                #res2 = res2.fillna(method='ffill')
 	                res2.rename(columns={1:"Batt + BW",0:"BW only"},inplace=True)
 	                print res2.columns
@@ -140,7 +175,7 @@ for size in sizes:
 	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.csv",sep=",")
 	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})    
 	                
-	                res2 = pd.concat([hoMax,hetMax],axis=1)
+	                res2 = pd.concat([hoMax,hetMax,s3Max,s4Max],axis=1)
 	                #res2 = res2.fillna(method='ffill')
 	                res2.rename(columns={0:"BW only",1:"Batt + BW"},inplace=True)
 	                print res2.columns

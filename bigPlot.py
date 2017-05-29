@@ -8,11 +8,11 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-algorithms=["simu","simu2"]
+algorithms=["simu","simu2","simu3",'simu4']
 sizes=[201,101]
 chunkCounts=[10]
 repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
-bad_repartition=[10,20]
+bad_repartition=[10,20,30,40]
 maxNodes=[17,33]
 maxExp=11
 
