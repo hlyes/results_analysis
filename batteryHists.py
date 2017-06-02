@@ -6,7 +6,7 @@ bad_proportions=[10,20]
 netsize=[101,201]
 maxPara=[17,33]
 chunksize=[10]
-algorithms=["simu","simu2"]
+algorithms=["simu","simu3","simu5"]
 experiment_range= range(1,11)
 folder="bench2.1"+os.sep+"out"
 file_suffix="-finalBatt.csv";
@@ -65,45 +65,49 @@ for size in netsize:
                         if a =="simu":
                             res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                             simu=res
-                        else:
-                            res= pd.DataFrame(columns=["simu2"],data=[[nmean],[bad10],[worst]])
+                        else if a == "simu3":
+                            res= pd.DataFrame(columns=["simu3"],data=[[nmean],[bad10],[worst]])
+                            simu2=res
+                        else if a == "simu5":
+                            res= pd.DataFrame(columns=["simu5"],data=[[nmean],[bad10],[worst]])
                             simu2=res
                     
                     
                     res = pd.concat([simu,simu2],axis=1)
                     #print simu
                     #print simu2
-                   
-                    #res.rename(columns={1:"AINA",2:"simu2ous"},inplace=True)
-                    diff = pd.DataFrame( res['simu2'] -  res["simu"] )
-                    print diff.T
-                    res = res.T
-                    difs[p]=diff
-                    res.rename(columns={0:"Moyennne",1:"Mauvais",2:"Pire"},inplace=True)
-                    res = res[1:]
-                    #print res
-                    res= res
-                    res = res
                     print res
-                    Plot.plot_bar(res/3600 ,filename+"-batHist.eps",{'yaxis_label':"Batterie restante(h)"})
                     
-                keys=difs.keys()
-                keys.sort()
+                #     #res.rename(columns={1:"AINA",2:"simu2ous"},inplace=True)
+                #     diff = pd.DataFrame( res['simu2'] -  res["simu"] )
+                #     print diff.T
+                #     res = res.T
+                #     difs[p]=diff
+                #     res.rename(columns={0:"Moyennne",1:"Mauvais",2:"Pire"},inplace=True)
+                #     res = res[1:]
+                #     #print res
+                #     res= res
+                #     res = res
+                #     print res
+                #     Plot.plot_bar(res/3600 ,filename+"-batHist.eps",{'yaxis_label':"Batterie restante(h)"})
+                    
+                # keys=difs.keys()
+                # keys.sort()
 
 
-                vals=[]
-                for d in keys: 
-                    difs[d].rename(columns={0:str(d)+"%"}, inplace=True)
-                    key=str(d)+"%"
-                    val=[key]
-                    for v in difs[d].values:
-                        val.append(v[0]/3600)
-                    vals.append(val)
+                # vals=[]
+                # for d in keys: 
+                #     difs[d].rename(columns={0:str(d)+"%"}, inplace=True)
+                #     key=str(d)+"%"
+                #     val=[key]
+                #     for v in difs[d].values:
+                #         val.append(v[0]/3600)
+                #     vals.append(val)
 
-                out = pd.DataFrame(columns=["% de mauvais",'Moyenne','Mauvais','Pire'],data=vals)
-                #out = out/3600
-                out.rename(columns={0:"10%",1:"20%"},inplace=True)
-                #out.reindex(out.index.drop(1))
-                out.index=out[out.columns[0]]
-                print out
-                Plot.plot_bar(out,str(size)+"-"+str(maxN)+"-batHist.eps",{'yaxis_label':"Difference de batterie restante (h)"})
+                # out = pd.DataFrame(columns=["% de mauvais",'Moyenne','Mauvais','Pire'],data=vals)
+                # #out = out/3600
+                # out.rename(columns={0:"10%",1:"20%"},inplace=True)
+                # #out.reindex(out.index.drop(1))
+                # out.index=out[out.columns[0]]
+                # print out
+                # Plot.plot_bar(out,str(size)+"-"+str(maxN)+"-batHist.eps",{'yaxis_label':"Difference de batterie restante (h)"})

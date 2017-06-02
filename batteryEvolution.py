@@ -2,7 +2,7 @@
 from plot_functions.Plot import *
 
 sizes=[101,201]
-algorithms=["simu","simu2"]
+algorithms=["simu","simu3","simu5"]
 chunkCounts=[10]
 repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
 bad_repartions=[10,20]

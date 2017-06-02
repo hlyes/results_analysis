@@ -8,14 +8,14 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-algorithms=["simu","simu3"]
-sizes=[201,101]
+algorithms=["simu","simu3","simu5"]
+sizes=[201]
 chunkCounts=[10]
 repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
 bad_repartition=[10,20,30,40]
-maxNodes=[17,33]
+maxNodes=[33]
 maxExp=5
-fastC=[0.2, 0.3,0.4,0.5,0.7,0.9,1.0]
+fastC=[1.0]
 
 """
 AP STATE: -AP.csv
@@ -25,7 +25,7 @@ Algorithm,NetSize,Chunk count,Population,MaxPar,D2D,BW_STRATEGY,Experiment,Compl
 
 """
 drawAll=True
-maxR=5
+maxR=2
 for s in sizes:
     for cs in chunkCounts:
         for r in repartions:

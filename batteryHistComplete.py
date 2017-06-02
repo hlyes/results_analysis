@@ -3,14 +3,14 @@ from plot_functions.Plot import *
 
 proportions=[10,20,30,40]
 bad_proportions=[10,20,30,40]
-netsize=[101,201]
-maxPara=[17,33]
+netsize=[201]
+maxPara=[33]
 chunksize=[10]
-algorithms=["simu","simu3"]
+algorithms=["simu","simu3","simu5"]
 experiment_range= range(1,5)
 folder="bench2"+os.sep+"out"
 file_suffix="-finalBatt.csv";
-fastC=[0.2, 0.3,0.4,0.5,0.7,0.9,1.0]
+fastC=[1.0]
 
 for size in netsize:
     for maxN in maxPara:
