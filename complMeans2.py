@@ -1,6 +1,6 @@
 #!/bin/env/python3
 from plot_functions.Plot import *
-
+### Hello there
 folder='' # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
     print 'Error: you should specify one parameter ==> the fodler to process'
