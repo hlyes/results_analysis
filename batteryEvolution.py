@@ -77,7 +77,7 @@ for size in sizes:
 	                    else:
 	                        hetMin=MinRes
 	                
-	                    Plot.plot_lines(MinRes,filename+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                    Plot.plot_lines(MinRes,filename+"-minBat.eps",{"yaxis_label":"Battery life(s)"})    
 	                    print filename+".csv"
 	                    MinRes.to_csv(filename+"-minBat.csv",sep=',')
 	                    
@@ -92,7 +92,7 @@ for size in sizes:
 	                    else:
 	                        hetMax=MaxRes
 	                
-	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Battery life(s)"})    
 	                    print filename+".csv"
 	                    MaxRes.to_csv(filename+"-maxBat.csv",sep=',')
 	                    
@@ -107,7 +107,7 @@ for size in sizes:
 	                    else:
 	                        hetAvg=AvgRes
 	                
-	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})      
+	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Battery life(s)"})      
 	                    print filename+".csv"
 	                    AvgRes.to_csv(filename+"-avgBat.csv",sep=',')
 	                    
@@ -119,14 +119,14 @@ for size in sizes:
 	                simu=simu.fillna(method='ffill')
 	                simu.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
 	                simu.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.csv",sep=",")
-	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.eps",{"yaxis_label":"Battery life(s)"})    
 	                
 	                
 	                simu2=pd.concat([hetMin,hetMax,hetAvg],axis=1)
 	                simu2.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
 	                simu2=simu2.fillna(method='ffill')
 	                simu2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.csv",sep=",")
-	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.eps",{"yaxis_label":"Battery life(s)"})    
 	                
 	                
 	                
@@ -136,21 +136,21 @@ for size in sizes:
 	                #res2 = res2.fillna(method='ffill')
 	                res2.rename(columns={1:"Batt + BW",0:"BW only"},inplace=True)
 	                print res2.columns
-	                res2.index.name="Temps (s)"
+	                res2.index.name="Time(s)"
 	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.csv",sep=",")
-	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Battery life(s)"})    
 	                
 	                res2 = pd.concat([hoMax,hetMax],axis=1)
 	                #res2 = res2.fillna(method='ffill')
 	                res2.rename(columns={0:"BW only",1:"Batt + BW"},inplace=True)
 	                print res2.columns
 	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.csv",sep=",")
-	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.eps",{"yaxis_label":"Battery life(s)"})    
 	                
 	                res2 = pd.concat([hoAvg,hetAvg],axis=1)
 	                #res2 = res2.fillna(method='ffill')
 	                res2.rename(columns={0:"BW only",1:"Batt + BW"},inplace=True)
 	                print res2.columns
 	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.csv",sep=",")
-	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})    
+	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.eps",{"yaxis_label":"Battery life(s)"})    
 	                

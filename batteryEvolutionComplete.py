@@ -1,23 +1,15 @@
 #!/bin/env/python3
 from plot_functions.Plot import *
 
-<<<<<<< HEAD
 sizes=[201]
 algorithms=["simu","simu3","simu5"]
-=======
-sizes=[101,201]
-algorithms=["simu","simu3"]
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
+
 chunkCounts=[10]
 repartions=[10,20,30,40]
 bad_repartions=[10,20,30,40]
-<<<<<<< HEAD
+
 maxNodes=[33]
 fastC=[1.0]
-=======
-maxNodes=[17,33]
-fastC=[0.2, 0.3, 0.4, 0.5, 0.7, 0.9, 1.0]
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
 
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
@@ -65,16 +57,9 @@ for size in sizes:
     	                    filename=folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix
     	                    print filename
     	                    filenames=[]
-<<<<<<< HEAD
+
     	                    for i in range(1,2):
     	                        filenames.append(filename+"-"+str(i)+"-bAvg.csv")
-
-=======
-    	                    for i in range(1,5):
-                                fname = filename+"-"+str(i)+"-bAvg.csv"
-    	                        filenames.append(fname)
-                                print fname," ",os.path.exists(fname)
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
     	                    #Time(s),Downloaded cunks,Total Downloaded chunks,Messages count,Total messages count,Completed,Total completed
     	                    dfs = []#[pd.read_csv(f,sep=",") for f in filenames]
     	                    for f in filenames:
@@ -184,11 +169,9 @@ for size in sizes:
 
     	                hoMin= hoMin
     	                hetMin= hetMin
-<<<<<<< HEAD
+
     	                res2 = pd.concat([hoMin,hetMin,s3Min],axis=1)
-=======
-    	                res2 = pd.concat([hoMin,s3Min],axis=1)
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
+
     	                #res2 = res2.fillna(method='ffill')
     	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2"},inplace=True)
     	                print res2.columns
@@ -196,22 +179,17 @@ for size in sizes:
     	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.csv",sep=",")
     	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
 
-<<<<<<< HEAD
+
     	                res2 = pd.concat([hoMax,hetMax,s3Max],axis=1)
-=======
-    	                res2 = pd.concat([hoMax,s3Max],axis=1)
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
+
     	                #res2 = res2.fillna(method='ffill')
     	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2"},inplace=True)
     	                print res2.columns
     	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.csv",sep=",")
     	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})
 
-<<<<<<< HEAD
     	                res2 = pd.concat([hoAvg,hetAvg,s3Avg],axis=1)
-=======
-    	                res2 = pd.concat([hoAvg,s3Avg],axis=1)
->>>>>>> d01de402e710c8662be6e0444c57b993a1103990
+
     	                #res2 = res2.fillna(method='ffill')
     	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2"},inplace=True)
     	                print res2.columns
