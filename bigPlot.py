@@ -11,10 +11,10 @@ folder=sys.argv[1]
 algorithms=["simu","simu3","simu5"]
 sizes=[201]
 chunkCounts=[10]
-repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
-bad_repartition=[10,20,30,40]
+repartions=[0,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
+bad_repartition=[0,10,20,30,40]
 maxNodes=[33]
-maxExp=5
+maxExp=10
 fastC=[1.0]
 
 """
