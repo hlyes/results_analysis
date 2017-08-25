@@ -1,14 +1,18 @@
 #!/bin/env/python3
 from plot_functions.Plot import *
 
+
+if (len(sys.argv)!=2):
+    print "Correct usage: python batteryHistComplete.py folder"
+    exit(1)
 proportions=[10,20,30,40]
 bad_proportions=[10,20,30,40]
 netsize=[201]
 maxPara=[33]
 chunksize=[10]
-algorithms=["simu","simu3","simu5"]
+algorithms=["simu","simu5"]
 experiment_range= range(1,5)
-folder="bench2"+os.sep+"out"
+folder=sys.argv[1]+os.sep+"out"
 file_suffix="-finalBatt.csv";
 fastC=[1.0]
 
