@@ -16,6 +16,8 @@ if len(sys.argv) != 2:
 folder=sys.argv[1]
 
 
+#$SIMU-$NETSIZE-$MAX_NODES-$CHUNKCOUNT-$POPULATION-$BAD-$FAST_C-$EXPERIMENT
+
 for size in sizes:
     for cs in chunkCounts:
         for r in repartions:
