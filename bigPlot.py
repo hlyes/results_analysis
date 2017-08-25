@@ -1,6 +1,43 @@
 #!/bin/env/python3
 from plot_functions.Plot import *
 
+
+def plot_lines_index_vertical(df,output_file,yaxis_label):
+
+    columns = df.columns
+    index = df[columns[0]]
+    df.index = index
+    df.index.name = columns[0]
+    # Print legends under the plot
+    font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+    mpl.rc('font', **font)
+    del df["Time(s)"]
+    df.index.name="Temps(s)"
+    plot = df.plot(kind='line',use_index=True)
+    lines = plot.get_lines()
+
+                                                                                                                                                                                                          
+    plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]*1.1])
+    
+    plot.set_yticks([0,1,2])
+    plot.set_yticklabels(["OFF","Bons","Mauvais"])
+    plt.ylabel(yaxis_label)
+    plt.yticks(rotation=70)
+    plt.xticks(rotation="horizontal")
+
+
+    fig = plt.gcf()
+    fig.set_size_inches(8 , 5)
+    fig.savefig(output_file,dpi=300)
+
+
+    return plot
+
+
+
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
     print "Error: you should specify one parameter ==> the fodler to process"
@@ -8,13 +45,13 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-algorithms=["simu","simu3","simu5"]
+algorithms=["simu","simu5"]
 sizes=[201]
 chunkCounts=[10]
-repartions=[10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
-bad_repartition=[10,20,30,40]
+repartions=[0,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
+bad_repartition=[0,10,20,30,40]
 maxNodes=[33]
-maxExp=5
+maxExp=10
 fastC=[1.0]
 
 """
@@ -54,7 +91,7 @@ for s in sizes:
                                         if not df is None:
                                             #UncommentLater
                                             df.rename(columns={"APState":"Etat du serveur"},inplace=True)
-                                            #plot_lines_index_vertical(df,filepath+"-"+str(i)+"-AP.eps","Population")
+                                            plot_lines_index_vertical(df,filepath+"-"+str(i)+"-AP.eps","Population")
 
                                 completionDFS=[]
                                 filenames=[]
@@ -75,7 +112,8 @@ for s in sizes:
                                     while i < len(filenames):
                                         completionDFS[i].to_csv(filenames[i])
                                         i+=1
-
+                                    df.index=df["Time(s)"]
+                                    index = df.index
                                     completed=[df["Completed Nodes"] for df in completionDFS]
                                     #print completedDFS
                                     goodCompleted=[df["GoodCompleted"] for df in completionDFS]
@@ -96,13 +134,13 @@ for s in sizes:
 
                                     cols=[completed,good,bad]
                                     compl = pd.concat(cols,axis=1)
-
+    
                                     compl.index.name='Time(s)'
-                                    compl.rename(columns={0:"Total",1:"Bons",2:"Mauvais"},inplace=True)
+                                    compl.rename(columns={0:"Total",1:"Good",2:"Bad"},inplace=True)
                                     #Uncomment Later
                                     compl.to_csv(filepath+"-completion.csv")
                                     #plot_lines(compl,filepath+"-completion.eps","Appareils completes (pourcentage)")
-                                    params={'yaxis_label': 'Completed devices (percentage)','use_index':True}
+                                    params={'yaxis_label': 'Completed devices (percentage)','use_index':False, 'yaxis_label':"Time(s)"}
                                     print len(compl)
                                     print params
                                     Plot.plot_lines(compl,filepath+'-completion.eps',params)
@@ -142,7 +180,7 @@ for s in sizes:
                                     chunks=pd.concat([chunksFromNodes,chunksFromAP],axis=1)
                                     chunks.rename(columns={0:"ChunksFromNodes",1:"ChunksFromAP"}, inplace=True )
                                     activity= pd.concat([goodActive,badActive,active],axis=1)
-                                    activity.rename(columns={0:"Bons",1:"Mauvais",2:"Total"},inplace=True )
+                                    activity.rename(columns={0:"Good",1:"Bad",2:"Total"},inplace=True )
 
 
                                     chunks.to_csv(filepath+"-chunksAPNodes.csv")
