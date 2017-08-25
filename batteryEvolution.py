@@ -17,7 +17,7 @@ folder=sys.argv[1]
 
 
 #$SIMU-$NETSIZE-$MAX_NODES-$CHUNKCOUNT-$POPULATION-$BAD-$FAST_C-$EXPERIMENT
-
+#
 for size in sizes:
     for cs in chunkCounts:
         for r in repartions:
