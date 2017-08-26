@@ -16,8 +16,6 @@ if len(sys.argv) != 2:
 folder=sys.argv[1]
 
 
-#$SIMU-$NETSIZE-$MAX_NODES-$CHUNKCOUNT-$POPULATION-$BAD-$FAST_C-$EXPERIMENT
-#
 for size in sizes:
     for cs in chunkCounts:
         for r in repartions:
@@ -35,7 +33,7 @@ for size in sizes:
 	                hetAvg=None
 	            
 
-	                suffix=str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(r)+"-"+str(br)
+	                suffix=str(strategy)+"-"+str(size)+"-"+str(maxN)+"-"+str(cs)+'-'+str(maxAP)+"-"+str(maxD2D)+"-"+str(r)+"-"+str(br)+fastC
 	                for algo in algorithms:
 	                	filename=folder+os.sep+"out"+os.sep+str(r)+os.sep+algo+"-"+suffix
 	                    print filename
@@ -91,7 +89,7 @@ for size in sizes:
 	                    MaxRes.to_csv(filename+"-maxBatt.csv")
 	                    if (algo == "simu"):
 	                        hoMax=MaxRes
-	                    else:
+	                    elif algo == "":
 	                        hetMax=MaxRes
 	                
 	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Battery life(s)"})    

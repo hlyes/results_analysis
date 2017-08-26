@@ -42,94 +42,101 @@ cpt = 0
 for ns in df['NetSize'].unique():
     df2 = df[df['NetSize']==ns]
     del df2['NetSize']
-    for mp in df2['MaxPar'].unique(): # NetSize
-        df3 = df2[df2['MaxPar']==mp]
-        del df3['MaxPar']
-        for cs in df3['Chunk count'].unique(): # MaxPar
-            df4 = df3[df3['Chunk count']==cs]
-            del df4['Chunk count']
-            for p in df4['Population'].unique(): #ChunkSize
-                df5 = df4[df4['Population'] == p]
-                del df5['Population']
-                for bp in df5['BadDevices'].unique(): #Population
-                    df6 = df5[df5["BadDevices"]==bp]
-                    del df6['BadDevices']
+    for strat in df2['Strategy'].unique():
+        df0 = df2[df2['Strategy']==strat]
+        del df0['Strategy']
+        for mp in df0['MaxPar'].unique(): # NetSize
+            df3 = df0[df0['MaxPar']==mp]
+            del df3['MaxPar']
+            for cs in df3['Chunk count'].unique(): # MaxPar
+                df4 = df3[df3['Chunk count']==cs]
+                del df4['Chunk count']
+                for p in df4['Population'].unique(): #ChunkSize
+                    df5 = df4[df4['Population'] == p]
+                    del df5['Population']
+                    for bp in df5['BadDevices'].unique(): #Population
+                        df6 = df5[df5["BadDevices"]==bp]
+                        del df6['BadDevices']
 
-                    for al in df6['Algorithm'].unique():#BadRepartition
-                        print al
-                        df7 = df6[df6['Algorithm']==al]
-                        del df7['Algorithm']
-                        del df7['Experiment']
-                        m = float(df7.mean())
-                        res.loc[cpt]=[al,p,bp,ns,mp,cs,m]
-                        cpt+=1
-                
-                res2 = res[res["Population"]==p]
-                res2 = res2[res2["Chunk count"]==cs]
-                res2 = res2[res2["NetSize"]==ns]
-                res2 = res2[res2["MaxPar"]==mp]
-                
-                del res2['Population']
-                del res2['Chunk count']
-                del res2['MaxPar']
-                del res2['NetSize']
-                
-                res2 = res2
-                res2.index = res2['Algorithm']
-                dfs={}
-                
-                for al in df["Algorithm"].unique():
-                    d = res2[res2['Algorithm']==al]
-                    del d["Algorithm"]
-                    d.index = d['BadDevices']
-                    del d['BadDevices']
-                    d.rename(columns={"Completion time(s)":al},inplace=True)
-                    dfs[al]=d
+                        for al in df6['Algorithm'].unique():#BadRepartition
+                            print al
+                            df7 = df6[df6['Algorithm']==al]
+                            del df7['Algorithm']
+                            del df7['Experiment']
+                            del df7['MaxAP']
+                            del df7['MaxChunks']
+                            del df7['FastC']
+                            m = float(df7.mean())
+                            res.loc[cpt]=[al,p,bp,ns,mp,cs,m]
+                            cpt+=1
+                    
+                    res2 = res[res["Population"]==p]
+                    res2 = res2[res2["Chunk count"]==cs]
+                    res2 = res2[res2["NetSize"]==ns]
+                    res2 = res2[res2["MaxPar"]==mp]
+                    
+                    del res2['Population']
+                    del res2['Chunk count']
+                    del res2['MaxPar']
+                    del res2['NetSize']
 
-                column_names=dfs.keys()
-                columns=[dfs[k] for k in column_names]
+                    
+                    res2 = res2
+                    res2.index = res2['Algorithm']
+                    dfs={}
+                    
+                    for al in df["Algorithm"].unique():
+                        d = res2[res2['Algorithm']==al]
+                        del d["Algorithm"]
+                        d.index = d['BadDevices']
+                        del d['BadDevices']
+                        d.rename(columns={"Completion time(s)":al},inplace=True)
+                        dfs[al]=d
 
-                res2 = pd.concat(columns,axis=1)
-                print ns
-                res2.to_csv(folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
-                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
-            for bp in res["BadDevices"].unique():
-                
-                res2 = res[res["BadDevices"]==bp]
-                res2 = res2[res2["Chunk count"]==cs]
-                res2 = res2[res2["NetSize"]==ns]
-                res2 = res2[res2["MaxPar"]==mp]
-                del res2['BadDevices']
-                del res2['Chunk count']
-                del res2['MaxPar']
-                del res2['NetSize']
-                res2 = res2
-                res2.index = res2['Algorithm']
-                dfs={}
-                for al in df["Algorithm"].unique():
-                    d = res2[res2['Algorithm']==al]
-                    del d["Algorithm"]
-                    d.index = d['Population']
-                    del d['Population']
-                    d.rename(columns={"Completion time(s)":al},inplace=True)
-                    dfs[al]=d
+                    column_names=dfs.keys()
+                    columns=[dfs[k] for k in column_names]
+
+                    res2 = pd.concat(columns,axis=1)
+                    print ns
+                    res2.to_csv(folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
+                    Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
+                for bp in res["BadDevices"].unique():
+                    
+                    res2 = res[res["BadDevices"]==bp]
+                    res2 = res2[res2["Chunk count"]==cs]
+                    res2 = res2[res2["NetSize"]==ns]
+                    res2 = res2[res2["MaxPar"]==mp]
+                    del res2['BadDevices']
+                    del res2['Chunk count']
+                    del res2['MaxPar']
+                    del res2['NetSize']
+                    res2 = res2
+                    res2.index = res2['Algorithm']
+                    dfs={}
+                    for al in df["Algorithm"].unique():
+                        d = res2[res2['Algorithm']==al]
+                        del d["Algorithm"]
+                        d.index = d['Population']
+                        del d['Population']
+                        d.rename(columns={"Completion time(s)":al},inplace=True)
+                        dfs[al]=d
 
 
-                column_names=dfs.keys()
-                columns=[dfs[k] for k in column_names]
+                    column_names=dfs.keys()
+                    columns=[dfs[k] for k in column_names]
 
-                del res2['Algorithm']
-                print res2
-                res2 = pd.concat(columns,axis=1)
-                print ns
-                res2.to_csv(folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
-                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
+                    del res2['Algorithm']
+                    print res2
+                    res2 = pd.concat(columns,axis=1)
+                    print ns
+                    res2.to_csv(folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
+                    Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
 
 
 
 #print res
 
-print "OutPutfile reading: Compl-<NetSize>-<Chunk count>-<Population>-<maxPara>-byBadDevices.eps"
-print "OutPutfile2 reading: Compl2-<NetSize>-<Chunk count>-<BadDevices>-<maxPara>-byBadDevices.eps"
+print "OutPutfile reading: Compl-<NetSize>-<Strategy>-<Chunk count>-<Population>-<maxPara>-byBadDevices.eps"
+print "OutPutfile2 reading: Compl2-<NetSize>-<Strategy>-<Chunk count>-<BadDevices>-<maxPara>-byBadDevices.eps"
 
 res.to_csv(folder+os.sep+"completionMeans.csv",sep=",")
