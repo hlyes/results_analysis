@@ -25,12 +25,12 @@ folder=sys.argv[1]
 #
 
 sizes=[201]
-algorithms=["AINA","simu","simu3","simu5"]
+algorithms=["AINA","simu","simu5"]
 chunkCounts=[20]
 repartions=[0,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
 bad_repartions=[0,10,20, 30,40]
 maxNodes=[33]
-strategies=[0,1,2]
+strategies=[2]
 APmax = [1]
 D2Dmax = [20]
 fastC='1.0'
@@ -78,16 +78,21 @@ for strategy in strategies:
             	                s4Max=None
             	                s4Avg=None
 
+                                hoWritten = False
+                                s3Written = False
+                                s4Written = False
+
                                 suffix = str(strategy)+"-"+str(size)+"-"+str(maxN)+"-"+str(cs)+'-'+str(maxAP)+"-"+str(maxD2D)+"-"+str(r)+"-"+str(br)+"-"+fastC
 
             	                for algo in algorithms:
             	                    filename=""
-            	                    filename=folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix
+            	                    filename=folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu-"+suffix
             	                    print filename
             	                    filenames=[]
 
-            	                    for i in range(1,6):
+            	                    for i in range(1,2):
             	                        filenames.append(filename+"-"+str(i)+"-bAvg.csv")
+                                        print "Opening\t"+filename+"-"+str(i)+"-bAvg.csv"
             	                    #Time(s),Downloaded cunks,Total Downloaded chunks,Messages count,Total messages count,Completed,Total completed
             	                    dfs = []#[pd.read_csv(f,sep=",") for f in filenames]
             	                    for f in filenames:
@@ -106,6 +111,8 @@ for strategy in strategies:
             	                    lengths= [len(df) for df in dfs]
             	                    max_index= lengths.index(max(lengths))
             	                    index = dfs[max_index]["Time(s)"]
+    
+                                    print  dfs[max_index].columns
             	                    #Time(s),MinimumBattery(s),MaximumBattery(s),AverageBattery(s)
             	                    mins=[df['MinimumBattery(s)'] for df in dfs]
             	                    maxs=[df['MaximumBattery(s)'] for df in dfs]
@@ -125,7 +132,7 @@ for strategy in strategies:
             	                        hetMin=MinRes
             	                    elif algo == "simu5":
             	                    	s3Min = MinRes
-                                    else:
+                                    elif algo =="AINA":
                                         s4Min=MinRes
             	                    
             	                    Plot.plot_lines(MinRes,filename+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
@@ -144,7 +151,7 @@ for strategy in strategies:
             	                        hetMax=MaxRes
             	                    elif algo == "simu5":
             	                    	s3Max = MaxRes
-            	                    else:
+            	                    elif algo =="AINA":
                                         s4Max = MaxRes
 
             	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})
@@ -158,73 +165,70 @@ for strategy in strategies:
             	                    AvgRes = AvgRes.mean(axis=1)
             	                    AvgRes.to_csv(filename+"-avgBatt.csv")
             	                    if (algo == "simu"):
-            	                        hoAvg=AvgRes
+            	                        hoAvg = AvgRes
             	                    elif algo=="simu3":
-            	                        hetAvg=AvgRes
+            	                        hetAvg= AvgRes
             	                    elif algo == "simu5":
             	                    	s3Avg = AvgRes
-                                    else:
+                                    elif algo =="AINA":
                                         s4Avg = AvgRes
 
             	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})
-            	                    print filename+".csv"
+            	                    #print filename+".csv"
             	                    AvgRes.to_csv(filename+"-avgBat.csv",sep=',')
                                     #print hoMin.columns
+                                if (hoMin is not None) and (hoAvg is not None) and (hoMax is not None):
+                                    if (not hoWritten):
+                                        simu=pd.concat([hoMin,hoMax,hoAvg],axis=1)
+                                        simu=simu.fillna(method='ffill')
+                                        simu.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+                                        simu.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.csv",sep=",")
+                                        Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
+                                        hoWritten = True
+                                       # simu2=pd.concat([hetMin,hetMax,hetAvg],axis=1)
+                                       # simu2.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+                                       # simu2=simu2.fillna(method='ffill')
+                                       # simu2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.csv",sep=",")
+                                       # Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
+                                if (s3Min is not None) and (s3Avg is not None) and (s3Max is not None):
+                                    if (not s3Written):
+                                        simu3=pd.concat([s3Min,s3Max,s3Avg],axis=1)
+                                        simu3.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+                                        simu3=simu3.fillna(method='ffill')
+                                        simu3.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu5-"+suffix+"-bAvg.csv",sep=",")
+                                        Plot.plot_lines(simu3,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu5-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
+                                        s3Written=True
+                                if (s4Min is not None) and (s4Avg is not None) and (s4Max is not None):
+                                    if (not s4Written):
+                                        simu4=pd.concat([s4Min,s4Max,s4Avg],axis=1)
+                                        simu4.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
+                                        simu4=simu4.fillna(method='ffill')
+                                        simu4.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"AINA-"+suffix+"-bAvg.csv",sep=",")
+                                        Plot.plot_lines(simu4,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"AINA-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
+                                        s4Written = True
+
+                                    # if hoWritten and s3Written and s4Written:
+                    	               #  res2 = pd.concat([hoMin,s3Min,s4Min],axis=1)
+
+                    	               #  #res2 = res2.fillna(method='ffill')
+                    	               #  res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
+                    	               #  print res2.columns
+                    	               #  res2.index.name="Temps (s)"
+                    	               #  res2.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.csv",sep=",")
+                    	               #  Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
 
 
+                    	               #  res2 = pd.concat([hoMax,s3Max,s4Max],axis=1)
+                    	               #  #res2 = res2.fillna(method='ffill')
+                    	               #  res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
 
-            	                simu=pd.concat([hoMin,hoMax,hoAvg],axis=1)
-            	                simu=simu.fillna(method='ffill')
-            	                simu.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
-            	                simu.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.csv",sep=",")
-            	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
+                    	               #  res2.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.csv",sep=",")
+                    	               #  Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})
+                                        
+                    	               #  res2 = pd.concat([hoAvg,s3Avg,s4Avg],axis=1)
 
-
-            	                simu2=pd.concat([hetMin,hetMax,hetAvg],axis=1)
-            	                simu2.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
-            	                simu2=simu2.fillna(method='ffill')
-            	                simu2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.csv",sep=",")
-            	                Plot.plot_lines(simu,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu2-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
-
-            	                simu3=pd.concat([s3Min,s3Max,s3Avg],axis=1)
-            	                simu3.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
-            	                simu3=simu3.fillna(method='ffill')
-            	                simu3.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu3-"+suffix+"-bAvg.csv",sep=",")
-            	                Plot.plot_lines(simu3,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu3-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
-
-            	                simu4=pd.concat([s4Min,s4Max,s4Avg],axis=1)
-            	                simu4.rename(columns={0:"Min",1:"Max",2:"Average"}, inplace=True)
-            	                simu4=simu4.fillna(method='ffill')
-            	                simu4.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu4-"+suffix+"-bAvg.csv",sep=",")
-            	                Plot.plot_lines(simu4,folder+os.sep+"out"+os.sep+str(r)+os.sep+"simu4-"+suffix+"-bAvg.eps",{"yaxis_label":"Batterie restante(s)"})
-
-
-
-            	                hoMin= hoMin
-            	                hetMin= hetMin
-
-            	                res2 = pd.concat([hoMin,hetMin,s3Min,s4Min],axis=1)
-
-            	                #res2 = res2.fillna(method='ffill')
-            	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2",3:"AINA"},inplace=True)
-            	                print res2.columns
-            	                res2.index.name="Temps (s)"
-            	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.csv",sep=",")
-            	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
-
-
-            	                res2 = pd.concat([hoMax,hetMax,s3Max,s4Max],axis=1)
-
-            	                #res2 = res2.fillna(method='ffill')
-            	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2",3:"AINA"},inplace=True)
-            	                print res2.columns
-            	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.csv",sep=",")
-            	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})
-
-            	                res2 = pd.concat([hoAvg,hetAvg,s3Avg,s4Avg],axis=1)
-
-            	                #res2 = res2.fillna(method='ffill')
-            	                res2.rename(columns={0:"BW only",1:"Batt + BW",2:"Batt + BW 2",3:"AINA"},inplace=True)
-            	                print res2.columns
-            	                res2.to_csv(folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.csv",sep=",")
-            	                Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})
+                    	               #  #res2 = res2.fillna(method='ffill')
+                    	               #  res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
+                    	               #  print res2.columns
+                    	               #  res2.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.csv",sep=",")
+                    	               #  Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})

@@ -9,10 +9,10 @@ proportions=[0,10,20,30,40]
 bad_proportions=[0,10,20,30,40]
 netsize=[201]
 maxPara=[33]
-strategies = [0,1,2]
+strategies = [2]
 chunksize=[20]
-algorithms=["simu","simu5"]
-experiment_range= range(1,5)
+algorithms=["simu","simu5","AINA"]
+experiment_range= range(1,2)
 folder=sys.argv[1]+os.sep+"out"
 file_suffix="-finalBatt.csv";
 fastC='1.0'
@@ -33,7 +33,7 @@ for size in netsize:
                             suffix = str(strategy)+"-"+str(size)+"-"+str(maxN)+"-"+str(cs)+'-'+str(maxAP)+"-"+str(maxD2D)+"-"+str(p)+"-"+str(bp)+"-"+fastC
 
                             for a in algorithms:
-                                filename=folder+os.sep+str(p)+os.sep+a+"-"+suffix
+                                filename=folder+os.sep+str(bp)+os.sep+str(p)+os.sep+a+"-"+suffix
                                 files=[]
                                 for i in experiment_range:
                                     files.append(filename+"-"+str(i)+file_suffix)
