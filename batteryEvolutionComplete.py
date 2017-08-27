@@ -43,10 +43,6 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-
-
-
-
 expMax=5 # 6 excluded
 for strategy in strategies:
     for size in sizes:
@@ -122,6 +118,7 @@ for strategy in strategies:
             	                    print lengths.index(max(lengths))
 
             	                    MinRes = pd.concat(mins, axis=1)
+
             	                    MinRes = MinRes.fillna(method='ffill')
             	                    MinRes.index=index
             	                    MinRes = MinRes.mean(axis=1)
@@ -172,6 +169,11 @@ for strategy in strategies:
             	                    	s3Avg = AvgRes
                                     elif algo =="AINA":
                                         s4Avg = AvgRes
+
+
+
+
+
 
             	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})
             	                    #print filename+".csv"
