@@ -109,7 +109,7 @@ for ns in res["NetSize"].unique():
                                 df6.rename(columns={'Completion time(s)':'Batt + Bw'} , inplace = True )
                             elif al == 'simu5':
                                 df6.rename(columns={'Completion time(s)':'Batt + Bw 2'} , inplace = True )
-                            else:
+                            elif al == 'AINA':
                                 df6.rename(columns={'Completion time(s)':'homogene'} , inplace = True )
 
                             columns.append(df6)
@@ -138,7 +138,7 @@ for ns in res["NetSize"].unique():
                                 df6.rename(columns={'Completion time(s)':'Batt + Bw'} , inplace = True )
                             elif al == 'simu5':
                                 df6.rename(columns={'Completion time(s)':'Batt + Bw 2'} , inplace = True )
-                            else:
+                            elif al=="AINA":
                                 df6.rename(columns={'Completion time(s)':'homogene'} , inplace = True )
 
                             columns.append(df6)
