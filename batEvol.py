@@ -16,7 +16,7 @@ fastC='1.0'
 folder="" # Needs to be replaced by sys.argv[1]
 
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -38,7 +38,7 @@ fastC='1.0'
 
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -70,13 +70,13 @@ for strategy in strategies:
             	                        try:
             	                            df = pd.read_csv(f,sep=",")
             	                        except IOError:
-            	                            print "IOError: ",f
+            	                            print("IOError: ",f)
             	                            df=None
             	                            continue
             	                        dfs.append(df)
 
             	                    if (len(dfs)==0):
-            	                        print "Escape"
+            	                        print("Escape")
             	                        continue
 
             	                    lengths= [len(df) for df in dfs]

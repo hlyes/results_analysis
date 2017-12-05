@@ -5,18 +5,32 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
+
 import matplotlib.pyplot as plt
 import gc
+import seaborn as sb
+sb.set()
+sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
+sb.set_style("whitegrid")
 
+#import seaborn as sb
 ##Default font of teh plots
 default_font = {'family' : 'normal' ,
 	'weight' : 'normal' ,
 	'size'  : 14 }
 
-default_xaxis_label = 'Time(s)'
-default_yaxis_label = 'Completion time(s)'
+default_xaxis_label = 'Temps(s)'
+default_yaxis_label = 'Temps de complétion(s)'
 default_xticks_rotation='horizontal'
 default_yticks_rotation='horizontal'
+
+
+en_default_xaxis_label = 'Time(s)'
+en_default_yaxis_label = 'Completion time(s)'
+en_default_xticks_rotation='horizontal'
+en_default_yticks_rotation='horizontal'
+
+# Markers
 
 # Markers
 markers = ['.','o','*','v','^']
@@ -87,8 +101,8 @@ class Plot(object):
 			df.index = index
 			df.index.name = columns[0]
 			del df[columns[0]]
-		# Print legends under the plot
-		plot = df.plot(kind='line',x=df.index,use_index=True)
+		# print(legends under the plot)
+		plot = df.plot(kind='line',x=df.index,use_index=True,grid=False)
 		lines = plot.get_lines()
 
 		if (put_markers):
@@ -97,8 +111,10 @@ class Plot(object):
 				line.set_marker(markers[i])
 				line.set_markersize(6)
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+
 		plt.ylabel(yaxis_label)
 		plt.xticks(rotation=xrotation)
+
 		#if (xticks is not None) and (xticks_labels is not None):
 		#	plot.set_xticks(xticks)
     	#	plot.set_xticklabels(xticks_labels)
@@ -116,7 +132,7 @@ class Plot(object):
 
 	@staticmethod
 	def plot_hist(df,output_file,params):
-	    # Print legends under the plot
+	    # print(legends under the plot)
 	    #df = df[df.columns[1::]]
 		# get params values
 		font = Plot.getParam('font',params)
@@ -145,7 +161,7 @@ class Plot(object):
 		if rotation is None :
 			rotation = 'horizontal'
 
-		plot = df.plot.hist(layout=(1,2),use_index=use_index)
+		plot = df.plot.hist(layout=(1,2),use_index=use_index,grid=False)
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
 		plt.ylabel(yaxis_label)
 		#plot.set_ylim(plot.get_ylim()+25)
@@ -187,7 +203,8 @@ class Plot(object):
 		if rotation is None :
 			rotation = 'horizontal'
 
-		plot = df.plot.box()
+		# plot = df.plot.bar(grid=False)
+		plot = df.plot.box(grid=False)
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
 		plt.xticks(rotation="horizontal")
@@ -238,9 +255,10 @@ class Plot(object):
 			df.index = index
 
 
-		plot = df.plot.bar()
+		plot = df.plot.bar(grid=False)
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
+
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)

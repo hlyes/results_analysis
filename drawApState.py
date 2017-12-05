@@ -3,7 +3,7 @@ from plot_functions.Plot import *
 
 folder = ""
 if len(sys.argv) != 2:
-    print "Error you should specify your folder path"
+    print("Error you should specify your folder path")
     exit(1)
 else:
     #folder="/home/lyes/Documents/workspace/simulations/netsimu/opt/bench2.1"
@@ -18,7 +18,7 @@ bad_repartition=[10,20,30,40]
 maxNodes=[17,33]
 maxExp=11
 
-print "Plotting APState Plots ..."
+print("Plotting APState Plots ...")
 for s in sizes:
     for cs in chunkCounts:
         for r in repartions:
@@ -28,10 +28,10 @@ for s in sizes:
                     for algo in algorithms:
                         #'bench2/out/40/homogene-101-10-40-17-2-bAvg.csv'
                         filepath = folder+os.sep+"out"+os.sep+str(r)+os.sep+algo+"-"+suffix
-                        #print filepath
+                        #print(filepath)
                         filenames=[]
                         for i in range(1,maxExp):
                             f=filepath+"-"+str(i)+"-AP.csv"
                             filenames.append(f)
                             Plot.plotAPState(f,filepath+"-"+str(i)+"-AP.eps")
-print "[DONE]"
+print("[DONE]")

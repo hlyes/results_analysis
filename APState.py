@@ -8,7 +8,7 @@ def plot_lines_index_vertical(df,output_file,yaxis_label):
     index = df[columns[0]]
     df.index = index
     df.index.name = columns[0]
-    # Print legends under the plot
+    # print(legends under the plot)
     font = {'family' : 'normal',
         'weight' : 'normal',
         'size'   : 14}
@@ -40,7 +40,7 @@ def plot_lines_index_vertical(df,output_file,yaxis_label):
 
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -79,7 +79,7 @@ for s in sizes:
                                 simu2=None
                                 for algo in algorithms:
                                     filepath = folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+algo+"-"+suffix
-                                    #print filepath
+                                    #print(filepath)
                                     filenames=[]
                                     for i in range(1,2):
                                         f=filepath+"-"+str(i)+"-AP.csv"
@@ -87,7 +87,7 @@ for s in sizes:
                                         try:
                                             df = pd.read_csv(f,sep=",")
                                         except IOError:
-                                            print "IOError. "+f
+                                            print("IOError. "+f)
                                             continue
                                         finally:
                                             if df is not None:

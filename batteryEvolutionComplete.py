@@ -16,7 +16,7 @@ fastC='1.0'
 folder="" # Needs to be replaced by sys.argv[1]
 
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -38,7 +38,7 @@ fastC='1.0'
 
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -80,39 +80,39 @@ for strategy in strategies:
             	                for algo in algorithms:
             	                    filename=""
             	                    filename=folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+algo+"-"+suffix
-            	                    print filename
+            	                    print(filename)
             	                    filenames=[]
 
             	                    for i in range(1,2):
             	                        filenames.append(filename+"-"+str(i)+"-bAvg.csv")
-                                        print "Opening\t"+filename+"-"+str(i)+"-bAvg.csv"
+                                        print("Opening\t"+filename+"-"+str(i)+"-bAvg.csv")
             	                    #Time(s),Downloaded cunks,Total Downloaded chunks,Messages count,Total messages count,Completed,Total completed
             	                    dfs = []#[pd.read_csv(f,sep=",") for f in filenames]
             	                    for f in filenames:
             	                        try:
             	                            df = pd.read_csv(f,sep=",")
             	                        except IOError:
-            	                            print "IOError: ",f
+            	                            print("IOError: ",f)
             	                            df=None
             	                            continue
             	                        dfs.append(df)
 
             	                    if (len(dfs)==0):
-            	                        print "Escape"
+            	                        print("Escape")
             	                        continue
 
             	                    lengths= [len(df) for df in dfs]
             	                    max_index= lengths.index(max(lengths))
             	                    index = dfs[max_index]["Time(s)"]
     
-                                    print  dfs[max_index].columns
+                                    print( dfs[max_index].columns)
             	                    #Time(s),MinimumBattery(s),MaximumBattery(s),AverageBattery(s)
             	                    mins=[df['MinimumBattery(s)'] for df in dfs]
             	                    maxs=[df['MaximumBattery(s)'] for df in dfs]
             	                    avgs=[df['AverageBattery(s)'] for df in dfs]
             	                    time=dfs[max_index]["Time(s)"]
-            	                    print len(dfs)
-            	                    print lengths.index(max(lengths))
+            	                    print(len(dfs))
+            	                    print(lengths.index(max(lengths)))
 
             	                    MinRes = pd.concat(mins, axis=1)
 
@@ -130,7 +130,7 @@ for strategy in strategies:
                                         s4Min=MinRes
             	                    
             	                    Plot.plot_lines(MinRes,filename+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
-            	                    print filename+".csv"
+            	                    print(filename+".csv")
             	                    MinRes.to_csv(filename+"-minBat.csv",sep=',')
 
 
@@ -149,7 +149,7 @@ for strategy in strategies:
                                         s4Max = MaxRes
 
             	                    Plot.plot_lines(MaxRes,filename+"-maxBat.eps",{"yaxis_label":"Batterie restante(s)"})
-            	                    print filename+".csv"
+            	                    print(filename+".csv")
             	                    MaxRes.to_csv(filename+"-maxBat.csv",sep=',')
 
 
@@ -173,9 +173,9 @@ for strategy in strategies:
 
 
             	                    Plot.plot_lines(AvgRes,filename+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})
-            	                    #print filename+".csv"
+            	                    #print(filename+".csv")
             	                    AvgRes.to_csv(filename+"-avgBat.csv",sep=',')
-                                    #print hoMin.columns
+                                    #print(hoMin.columns)
 
 
                                 output_folder = folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep
@@ -215,7 +215,7 @@ for strategy in strategies:
 
                 	                #res2 = res2.fillna(method='ffill')
                 	                res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
-                	                print res2.columns
+                	                print(res2.columns)
                 	                res2.index.name="Temps (s)"
                 	                res2.to_csv(output_folder+"comparison-"+suffix+"-minBat.csv",sep=",")
                 	                Plot.plot_lines(res2,output_folder+"comparison-"+suffix+"-minBat.eps",{"yaxis_label":"Batterie restante(s)"})
@@ -232,6 +232,6 @@ for strategy in strategies:
 
                     	               #  #res2 = res2.fillna(method='ffill')
                     	               #  res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
-                    	               #  print res2.columns
+                    	               #  print(res2.columns)
                     	               #  res2.to_csv(folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.csv",sep=",")
                     	               #  Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"comparison-"+suffix+"-avgBat.eps",{"yaxis_label":"Batterie restante(s)"})

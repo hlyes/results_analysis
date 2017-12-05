@@ -3,7 +3,7 @@ from plot_functions.Plot import *
 
 
 if (len(sys.argv)!=2):
-    print "Correct usage: python batteryHistComplete.py folder"
+    print("Correct usage: python batteryHistComplete.py folder")
     exit(1)
 proportions=[0,10,20,30,40]
 bad_proportions=[0,10,20,30,40]
@@ -46,12 +46,12 @@ for size in netsize:
                                             df =pd.read_csv(f,sep=",")
                                         except pd.io.common.EmptyDataError as e:
 
-                                            print "Empty data error for : "+ f
+                                            print("Empty data error for : "+ f)
                                         else:
                                             dfs.append(df)
-                                        #print df.columns
+                                        #print(df.columns)
                                 except IOError:
-                                    print "IOError ===>"+cf
+                                    print("IOError ===>"+cf)
                                 if len(dfs) ==0:
                                     continue
                                 dfs2=[df.duplicated()  for df in dfs]
@@ -59,8 +59,8 @@ for size in netsize:
                                 for df in dfs:
                                     n = df.sort(['InitialBattery','FinalBattery'], ascending=[1, 1])
                                     new.append(n)
-                                print filename
-                                #print new[0]
+                                print(filename)
+                                #print(new[0])
                                 new_ini = [n['InitialBattery'] for n in new]
                                 new_final = [n['FinalBattery'] for n in new]
                                 #new_bl = [n['NetworkingBatteryLoss'] for n in new]
@@ -73,12 +73,12 @@ for size in netsize:
                                 nmean= new.mean()
 
                                 prop = float(p)/ 100
-                                #print len(new[len(new)-int((1-prop)*len(new)):])
+                                #print(len(new[len(new)-int((1-prop)*len(new)):]))
                                 good10 = new[len(new)-int(prop*len(new)):].mean()
                                 bad10 = new[:int(prop*len(new))].mean()
                                 worst  = new.min()
-                                #print worst
-                                #print new
+                                #print(worst)
+                                #print(new)
                                 if a =="simu":
                                     res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                                     simu=res
@@ -93,7 +93,7 @@ for size in netsize:
                             res.index = index
                             del res['Categorie']
 
-                            print res
+                            print(res)
                             res.to_csv(folder+os.sep+str(p)+os.sep+"battHistComp-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
                             Plot.plot_bar(res.T, folder+os.sep+str(p)+os.sep+"battHistComp-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
 
@@ -109,7 +109,7 @@ for size in netsize:
                             res2 = res2/60
                             res2.to_csv(folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
                             Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
-                            print res2
+                            print(res2)
 
 
 
@@ -131,5 +131,5 @@ for size in netsize:
                         # out.rename(columns={0:"10%",1:"20%"},inplace=True)
                         # #out.reindex(out.index.drop(1))
                         # out.index=out[out.columns[0]]
-                        # print out
+                        # print(out)
                         # #plot_hist(out,str(netsize)+"-"+str(maxPara)+"-batHist.eps","Difference de batterie restante (h)")

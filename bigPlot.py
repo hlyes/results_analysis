@@ -8,7 +8,7 @@ def plot_lines_index_vertical(df,output_file,yaxis_label):
     index = df[columns[0]]
     df.index = index
     df.index.name = columns[0]
-    # Print legends under the plot
+    # print(legends under the plot)
     font = {'family' : 'normal',
         'weight' : 'normal',
         'size'   : 14}
@@ -40,7 +40,7 @@ def plot_lines_index_vertical(df,output_file,yaxis_label):
 
 folder="" # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
-    print "Error: you should specify one parameter ==> the fodler to process"
+    print("Error: you should specify one parameter ==> the fodler to process")
     exit(0)
 
 folder=sys.argv[1]
@@ -84,7 +84,7 @@ for s in sizes:
                                         simu2=None
                                         for algo in algorithms:
                                             filepath = folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+algo+"-"+suffix
-                                            #print filepath
+                                            #print(filepath)
                                             filenames=[]
                                             for i in range(1,2):
                                                 f=filepath+"-"+str(i)+"-AP.csv"
@@ -93,7 +93,7 @@ for s in sizes:
                                                 try:
                                                     df = pd.read_csv(f,sep=",")
                                                 except IOError:
-                                                    print "IOError "+ f
+                                                    print("IOError "+ f)
                                                 finally:
                                                     if not df is None:
                                                         #UncommentLater
@@ -108,7 +108,7 @@ for s in sizes:
                                                     filenames.append(f)
                                                 completionDFS=[pd.read_csv(f,sep=",") for f in filenames]
 
-                                                print completionDFS[0].columns
+                                                print(completionDFS[0].columns)
                                                 new=[]
                                                 for df in completionDFS:
                                                     df2=df.drop(len(df)-1)
@@ -122,7 +122,7 @@ for s in sizes:
                                                 df.index=df["Time(s)"]
                                                 index = df.index
                                                 completed=[df["Completed Nodes"] for df in completionDFS]
-                                                #print completedDFS
+                                                #print(completedDFS)
                                                 goodCompleted=[df["GoodCompleted"] for df in completionDFS]
                                                 badCompleted=[df["BadCompleted"] for df in completionDFS]
 
@@ -148,15 +148,15 @@ for s in sizes:
                                                 compl.to_csv(filepath+"-completion.csv")
                                                 #plot_lines(compl,filepath+"-completion.eps","Appareils completes (pourcentage)")
                                                 params={'yaxis_label': 'Completed devices (percentage)','use_index':False, 'yaxis_label':"Time(s)"}
-                                                print len(compl)
-                                                print params
+                                                print(len(compl))
+                                                print(params)
                                                 Plot.plot_lines(compl,filepath+'-completion.eps',params)
 
                                                 filenames=[]
                                                 for i in range(1,maxR):
                                                     f=filepath+"-"+str(i)+"-info.csv"
                                                     filenames.append(f)
-                                                    print f
+                                                    print(f)
                                                 info = [pd.read_csv(f,sep=',') for f in filenames]
                                                 chunksFromNodes = [df["ChunksFromDevices"] for df in info]
                                                 chunksFromAP = [df["ChunksFromAp"] for df in info]

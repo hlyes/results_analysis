@@ -3,7 +3,7 @@ from plot_functions.Plot import *
 
 folder='' # Needs to be replaced by sys.argv[1]
 if len(sys.argv) != 2:
-    print 'Error: you should specify one parameter ==> the fodler to process'
+    print('Error: you should specify one parameter ==> the fodler to process')
     exit(0)
 
 folder=sys.argv[1]
@@ -30,7 +30,7 @@ filepath = folder + os.sep + 'finish_times.csv'
 
 df = pd.read_csv(filepath, sep = ',')
 
-print df.columns
+print(df.columns)
 
 values={}
 
@@ -59,7 +59,7 @@ for ns in df['NetSize'].unique():
                         del df6['BadDevices']
 
                         for al in df6['Algorithm'].unique():#BadRepartition
-                            print al
+                            print(al)
                             df7 = df6[df6['Algorithm']==al]
                             del df7['Algorithm']
                             del df7['Experiment']
@@ -97,7 +97,7 @@ for ns in df['NetSize'].unique():
                     columns=[dfs[k] for k in column_names]
 
                     res2 = pd.concat(columns,axis=1)
-                    print ns
+                    print(ns)
                     res2.to_csv(folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
                     Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+str(p)+os.sep+'Compl-'+str(ns)+'-'+str(cs)+'-'+str(p)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
                 for bp in res["BadDevices"].unique():
@@ -126,17 +126,17 @@ for ns in df['NetSize'].unique():
                     columns=[dfs[k] for k in column_names]
 
                     del res2['Algorithm']
-                    print res2
+                    print(res2)
                     res2 = pd.concat(columns,axis=1)
-                    print ns
+                    print(ns)
                     res2.to_csv(folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.csv',sep=",")
                     Plot.plot_lines(res2,folder+os.sep+"out"+os.sep+'Compl2-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(bp)+'-'+str(mp)+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
 
 
 
-#print res
+#print(res)
 
-print "OutPutfile reading: Compl-<NetSize>-<Strategy>-<Chunk count>-<Population>-<maxPara>-byBadDevices.eps"
-print "OutPutfile2 reading: Compl2-<NetSize>-<Strategy>-<Chunk count>-<BadDevices>-<maxPara>-byBadDevices.eps"
+print("OutPutfile reading: Compl-<NetSize>-<Strategy>-<Chunk count>-<Population>-<maxPara>-byBadDevices.eps")
+print("OutPutfile2 reading: Compl2-<NetSize>-<Strategy>-<Chunk count>-<BadDevices>-<maxPara>-byBadDevices.eps")
 
 res.to_csv(folder+os.sep+"completionMeans.csv",sep=",")
