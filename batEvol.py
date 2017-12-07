@@ -55,31 +55,28 @@ for strategy in strategies:
 
 
                                 suffix = str(strategy)+"-"+str(size)+"-"+str(maxN)+"-"+str(cs)+'-'+str(maxAP)+"-"+str(maxD2D)+"-"+str(r)+"-"+str(br)+"-"+fastC
-
-            	                for algo in algorithms:
-            	                    filename=""
-            	                    filename=folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu-"+suffix
-            	                    
+                                for algo in algorithms:
+                                    filename=""
+                                    filename=folder+os.sep+"out"+os.sep+str(br)+os.sep+str(r)+os.sep+"simu-"+suffix
                                     filenames=[]
-            	                    for i in range(1,expMax):
-            	                        filenames.append(filename+"-"+str(i)+"-bAvg.csv")
+                                    for i in range(1,expMax):
+                                        filenames.append(filename+"-"+str(i)+"-bAvg.csv")
 
-            	                    #Time(s),Downloaded cunks,Total Downloaded chunks,Messages count,Total messages count,Completed,Total completed
-            	                    dfs = []#[pd.read_csv(f,sep=",") for f in filenames]
-            	                    for f in filenames:
-            	                        try:
-            	                            df = pd.read_csv(f,sep=",")
-            	                        except IOError:
-            	                            print("IOError: ",f)
-            	                            df=None
-            	                            continue
-            	                        dfs.append(df)
+                                    dfs = []#[pd.read_csv(f,sep=",") for f in filenames]
+                                    for f in filenames:
+                                        try:
+                                            df = pd.read_csv(f,sep=",")
+                                        except IOError:
+                                            print("IOError: ",f)
+                                            df=None
+                                            continue
+                                        dfs.append(df)
 
-            	                    if (len(dfs)==0):
-            	                        print("Escape")
-            	                        continue
+                                    if (len(dfs)==0):
+                                        print("Escape")
+                                    continue
 
-            	                    lengths= [len(df) for df in dfs]
-            	                    max_index= lengths.index(max(lengths))
-            	                    index = dfs[max_index]["Time(s)"]
-    
+                                lengths= [len(df) for df in dfs]
+                                max_index= lengths.index(max(lengths))
+                                index = dfs[max_index]["Time(s)"]
+
