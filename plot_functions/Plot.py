@@ -11,7 +11,7 @@ import gc
 import seaborn as sb
 sb.set()
 sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
-sb.set_style("whitegrid")
+sb.set_style("whitegrid",{"axes.grid":False})
 
 #import seaborn as sb
 ##Default font of teh plots
@@ -113,6 +113,7 @@ class Plot(object):
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
 
 		plt.ylabel(yaxis_label)
+		plt.xlabel(xaxis_label)
 		plt.xticks(rotation=xrotation)
 
 		#if (xticks is not None) and (xticks_labels is not None):
@@ -164,6 +165,7 @@ class Plot(object):
 		plot = df.plot.hist(layout=(1,2),use_index=use_index,grid=False)
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
 		plt.ylabel(yaxis_label)
+		plt.xlabel(xaxis_label)
 		#plot.set_ylim(plot.get_ylim()+25)
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
