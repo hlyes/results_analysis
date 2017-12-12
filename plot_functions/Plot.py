@@ -118,7 +118,7 @@ class Plot(object):
 
 		#if (xticks is not None) and (xticks_labels is not None):
 		#	plot.set_xticks(xticks)
-    	#	plot.set_xticklabels(xticks_labels)
+		#	plot.set_xticklabels(xticks_labels)
 		if not (yticks is None):
 			plot.set_yticks(yticks)
 			plot.set_yticklabels(yticks_labels)
@@ -133,8 +133,8 @@ class Plot(object):
 
 	@staticmethod
 	def plot_hist(df,output_file,params):
-	    # print(legends under the plot)
-	    #df = df[df.columns[1::]]
+		# print(legends under the plot)
+		#df = df[df.columns[1::]]
 		# get params values
 		font = Plot.getParam('font',params)
 		use_index = Plot.getParam('use_index',params)
