@@ -12,9 +12,7 @@ sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
 sb.set_style("whitegrid",{"axes.grid":False})
 
 def plot_lines_logscale(df,output_file,yaxis_label):
-
     columns = df.columns
-    print (df)
     index = df[columns[0]]
     df.index = index
     df.index.name = columns[0]
@@ -38,10 +36,8 @@ def plot_lines_logscale(df,output_file,yaxis_label):
 
 def plot_lines2(df,output_file,yaxis_label):
 
-
     columns = df.columns
     index = df[columns[0]]
-    
     df.index = index
     df.index.name = columns[0]
     # Print legends under the plot
@@ -159,11 +155,8 @@ def plot_chunksNodes():
 
 
 def plot_chunksize():
-    df = pd.read_csv('chunksizeLimited.csv',sep=',')
+    df = pd.read_csv('chunksize.csv')
     plot_lines_logscale(df,"chunksize.eps","Temps de complétion(s)")
-
-    df = pd.read_csv('chunksizeUnlimited.csv',sep=',')
-    plot_lines_logscale(df,"chunksizeU.eps","Temps de complétion(s)")
     pass
 
 

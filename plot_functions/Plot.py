@@ -4,14 +4,14 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
-mpl.use('Agg')
 
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 import gc
-import seaborn as sb
-sb.set()
-sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
-sb.set_style("whitegrid",{"axes.grid":False})
+
+# sb.set()
+# sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
+# sb.set_style("whitegrid",{"axes.grid":False})
 
 #import seaborn as sb
 ##Default font of teh plots

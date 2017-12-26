@@ -13,5 +13,10 @@ echo "Computing batteyEvolution"
 python3 batteryEvolutionComplete.py $1 >> out.out
 echo "Computing battery histograms" >> out.out
 python3 batteryHistComplete.py $1 >> out.out
+python3 batteryHistPercentage.py $1 >> out.out
+python3 batteryHistNT.py $1 >> out.out
 echo "plotting bigPlot.py"
 python3 bigPlot.py $1 >> out.out
+
+echo "END"
+

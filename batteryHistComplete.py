@@ -14,7 +14,7 @@ maxPara=[33]
 strategies = [2]
 chunksize=[20]
 algorithms=["AINA","simu","simu5"]
-experiment_range= range(1,2)
+experiment_range= range(1,10)
 folder=sys.argv[1]+os.sep+"out"
 file_suffix="-finalBatt.csv";
 fastC='1.0'
@@ -97,7 +97,7 @@ for size in netsize:
 
                                 print(res)
                                 res.to_csv(folder+os.sep+str(p)+os.sep+"battHistComp-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res.T, folder+os.sep+str(p)+os.sep+"battHistComp-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                Plot.plot_bar(res.T, folder+os.sep+str(p)+os.sep+"battHistComp-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais périphériques (%)'})
 
                                 columns = []
                                 for a2 in algorithms[1:]:
@@ -110,7 +110,7 @@ for size in netsize:
                                 res2 = pd.concat(columns,axis=1)
                                 res2 = res2/60
                                 res2.to_csv(folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais périphériques (%)'})
                                 print(res2)
 
 
