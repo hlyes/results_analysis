@@ -202,7 +202,7 @@ for strategy in strategies:
 									res2 = pd.concat([hoMin,s3Min,s4Min],axis=1)
 
 									#res2 = res2.fillna(method='ffill')
-									res2.rename(columns={0:"BW only",1:"Batt + BW",3:"Batt + BW 2",2:"AINA"},inplace=True)
+									res2.rename(columns={0:"EDWiN + Batt",1:"EDWiN + Batt + BW",3:"EDWiN + Batt + BW 2",2:"EDWiN"},inplace=True)
 									print(res2.columns)
 									res2.index.name="Temps (s)"
 									res2.to_csv(output_folder+"comparison-"+suffix+"-minBat.csv",sep=",")

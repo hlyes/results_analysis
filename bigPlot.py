@@ -51,7 +51,7 @@ chunkCounts=[20]
 repartions=[0,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
 bad_repartition=[0,10,20,30,40]
 maxNodes=[33]
-maxExp=2
+maxExp=10
 fastC=[1.0]
 strategies=[2]
 APMax=[1]
@@ -142,12 +142,12 @@ for s in sizes:
 												cols=[completed,good,bad]
 												compl = pd.concat(cols,axis=1)
 				
-												compl.index.name='Time(s)'
+												compl.index.name='Temps(s)'
 												compl.rename(columns={0:"Total",1:"Good",2:"Bad"},inplace=True)
 												#Uncomment Later
 												compl.to_csv(filepath+"-completion.csv")
 												#plot_lines(compl,filepath+"-completion.eps","Appareils completes (pourcentage)")
-												params={'yaxis_label': 'Completed devices (percentage)','use_index':False, 'yaxis_label':"Time(s)"}
+												params={'yaxis_label': 'Périphériques complétés (%)','use_index':False, 'xaxis_label':"Temps(s)"}
 												print(len(compl))
 												print(params)
 												Plot.plot_lines(compl,filepath+'-completion.eps',params)

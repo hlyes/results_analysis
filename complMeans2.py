@@ -104,21 +104,20 @@ for ns in res["NetSize"].unique():
 							del df6[indexName]
 							#print(df6)
 							if al == "simu":
-								df6.rename(columns={"Completion time(s)": 'Batt' } , inplace = True )
+								df6.rename(columns={"Completion time(s)": 'EDWiN + Batterie' } , inplace = True )
 							elif al == "simu3":
-								df6.rename(columns={'Completion time(s)':'Batt + Bw'} , inplace = True )
+								df6.rename(columns={'Completion time(s)':'EDWiN + Batt + BW'} , inplace = True )
 							elif al == 'simu5':
-								df6.rename(columns={'Completion time(s)':'Batt + Bw 2'} , inplace = True )
+								df6.rename(columns={'Completion time(s)':'EDWiN + Batt + BW'} , inplace = True )
 							elif al == 'AINA':
-								df6.rename(columns={'Completion time(s)':'homogène'} , inplace = True )
+								df6.rename(columns={'Completion time(s)':'EDWiN'} , inplace = True )
 
 							columns.append(df6)
 						out = pd.concat(columns,axis=1)
 						print(out)
 						print(folder+os.sep+"out"+os.sep+'ComplGoodFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byBadDevices.csv')
 						out.to_csv(folder+os.sep+"out"+os.sep+'ComplGoodFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byBadDevices.csv',sep=",")
-						Plot.plot_lines(out,folder+os.sep+"out"+os.sep+'ComplGoodFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byBadDevices.eps',{'xaxis_label':'Bad devices (percent)'})
-
+						Plot.plot_lines(out,folder+os.sep+"out"+os.sep+'ComplGoodFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byBadDevices.eps',{'xaxis_label':'Mauvais périphériques(%)'})
 					# Fix bad devices
 					for p in df4['BadDevices'].unique():
 						df5 = df4[df4['BadDevices'] == p]
@@ -133,19 +132,19 @@ for ns in res["NetSize"].unique():
 							del df6[indexName]
 							#print(df6)
 							if al == "simu":
-								df6.rename(columns={"Completion time(s)": 'Batt' } , inplace = True )
+								df6.rename(columns={"Completion time(s)": 'EDWiN + Batt' } , inplace = True )
 							elif al == "simu3":
-								df6.rename(columns={'Completion time(s)':'Batt + Bw'} , inplace = True )
+								df6.rename(columns={'Completion time(s)':'EDWiN + Batt + BW'} , inplace = True )
 							elif al == 'simu5':
-								df6.rename(columns={'Completion time(s)':'Batt + Bw 2'} , inplace = True )
-							elif al=="AINA":
-								df6.rename(columns={'Completion time(s)':'homogène'} , inplace = True )
+								df6.rename(columns={'Completion time(s)':'EDWiN + Batt + BW'} , inplace = True )
+							elif al == 'AINA':
+								df6.rename(columns={'Completion time(s)':'EDWiN'} , inplace = True )
 
 							columns.append(df6)
 						out = pd.concat(columns,axis=1)
 						print(out )
 						out.to_csv(folder+os.sep+"out"+os.sep+'ComplBadFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byGoodDevices.csv',sep=",")
-						Plot.plot_lines(out,folder+os.sep+"out"+os.sep+'ComplBadFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byGoodDevices.eps',{'xaxis_label':'Fast devices (percent)'})
+						Plot.plot_lines(out,folder+os.sep+"out"+os.sep+'ComplBadFixed-'+str(ns)+'-'+str(strat)+'-'+str(cs)+'-'+str(mp)+'-'+str(fc)+'-'+str(int(p))+'-byGoodDevices.eps',{'xaxis_label':'Périphériques bons-rapides (%)'})
 
 
 
