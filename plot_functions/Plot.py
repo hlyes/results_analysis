@@ -110,8 +110,8 @@ class Plot(object):
 				line = lines[i]
 				line.set_marker(markers[i])
 				line.set_markersize(6)
-		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
-
+		#plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+		plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
 		plt.xticks(rotation=xrotation)
