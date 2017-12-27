@@ -74,7 +74,7 @@ for size in netsize:
                                     new.sort_values()
                                     nmean= new.mean()
 
-                                    prop = float(p)/ 100
+                                    prop = float(bp)/ 100
                                     #print(len(new[len(new)-int((1-prop)*len(new)):]))
                                     good10 = new[len(new)-int(prop*len(new)):].mean()
                                     bad10 = new[:int(prop*len(new))].mean()

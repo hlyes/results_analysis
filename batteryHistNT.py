@@ -14,7 +14,7 @@ maxPara=[33]
 strategies = [2]
 chunksize=[20]
 algorithms=["AINA","simu","simu5"]
-experiment_range= range(1,2)
+experiment_range= range(1,11)
 folder=sys.argv[1]+os.sep+"out"
 file_suffix="-finalBatt.csv";
 fastC='1.0'
@@ -59,28 +59,33 @@ for size in netsize:
                                     dfs2=[df.duplicated()  for df in dfs]
                                     new=[]
                                     for df in dfs:
-                                        n = df.sort_values(by=['InitialBattery','NetworkingBatteryLoss'], ascending=[1, 1])
+                                        n = df.sort_values(by=['InitialBattery','FinalBattery'], ascending=[1, 1])
+                                        
                                         new.append(n)
-                                    print(filename)
-                                    #print(new[0])
-                                    new_ini = [n['InitialBattery'] for n in new]
-                                    new_final = [n['NetworkingBatteryLoss'] for n in new]
-                                    #new_bl = [n['NetworkingBatteryLoss'] for n in new]
+                                    
 
-                                    new_final=pd.concat(new_final,axis=1)
+                                    new_ini = [n['InitialBattery'] for n in new]
+                                    new_final = [n['FinalBattery'] for n in new]
+                                    new_bl = [n['NetworkingBatteryLoss'] for n in new]
+                                    
+                                    new_final=pd.concat(new_final,axis=1) 
                                     ini = pd.concat(new_ini,axis=1)
                                     new = (new_final.mean(axis=1))
                                     
-                                    new.sort_values()
-                                    nmean= new.mean()
+                                    minidx = new.idxmin(axis=1)
+                                    new_bl = pd.concat(new_bl,axis=1)
+                                    new_bl = new_bl.mean(axis=1)
+                                    new_bl.sort_values()
+                                    nmean= new_bl.mean()
 
-                                    prop = float(p)/ 100
+                                    prop = float(bp)/ 100
                                     #print(len(new[len(new)-int((1-prop)*len(new)):]))
-                                    good10 = new[len(new)-int(prop*len(new)):].mean()
-                                    bad10 = new[:int(prop*len(new))].mean()
-                                    worst  = new.min()
+                                    good10 = new_bl[len(new_bl)-int(prop*len(new_bl)):].mean()
+                                    bad10 = new[:int(prop*len(new_bl))].mean()
+                                    worst  = new_bl.min()
+                                    
                                     #print(worst)
-                                    #print(new)
+                                    
                                     if a =="simu":
                                         res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                                         simu=res
@@ -96,20 +101,20 @@ for size in netsize:
                                 del res['Categorie']
 
                                 # print(res)
-                                res.to_csv(folder+os.sep+str(p)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res.T, folder+os.sep+str(p)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                res.to_csv(folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
+                                Plot.plot_bar(res.T, folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
 
                                 columns = []
                                 for a2 in algorithms[1:]:
-                                    diff = pd.DataFrame( res["AINA"] - res[a2] )
+                                    diff = pd.DataFrame( res[a2]/ res["AINA"] )
                                     diff.rename(columns = {0:a2},inplace=True)
                                     columns.append(diff)
 
 
 
                                 res2 = pd.concat(columns,axis=1)
-                                res2.to_csv(folder+os.sep+str(p)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                res2.to_csv(folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
+                                Plot.plot_bar(res2.T, folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
                                 print(res2)
 
 
