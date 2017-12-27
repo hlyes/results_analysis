@@ -7,7 +7,7 @@ if (len(sys.argv)!=2):
 	exit(1)
 
 
-proportions=[0]#,10,20,30,40]
+proportions=[0,10,20,30,40]
 bad_proportions=[0,10,20,30,40]
 netsize=[201]
 maxPara=[33]
@@ -59,28 +59,33 @@ for size in netsize:
                                     dfs2=[df.duplicated()  for df in dfs]
                                     new=[]
                                     for df in dfs:
-                                        n = df.sort_values(by=['InitialBattery','NetworkingBatteryLoss'], ascending=[1, 1])
+                                        n = df.sort_values(by=['InitialBattery','FinalBattery'], ascending=[1, 1])
+                                        
                                         new.append(n)
-                                    print(filename)
-                                    #print(new[0])
-                                    new_ini = [n['InitialBattery'] for n in new]
-                                    new_final = [n['NetworkingBatteryLoss'] for n in new]
-                                    #new_bl = [n['NetworkingBatteryLoss'] for n in new]
+                                    
 
-                                    new_final=pd.concat(new_final,axis=1)
+                                    new_ini = [n['InitialBattery'] for n in new]
+                                    new_final = [n['FinalBattery'] for n in new]
+                                    new_bl = [n['NetworkingBatteryLoss'] for n in new]
+                                    
+                                    new_final=pd.concat(new_final,axis=1) 
                                     ini = pd.concat(new_ini,axis=1)
                                     new = (new_final.mean(axis=1))
                                     
-                                    new.sort_values()
-                                    nmean= new.mean()
+                                    minidx = new.idxmin(axis=1)
+                                    new_bl = pd.concat(new_bl,axis=1)
+                                    new_bl = new_bl.mean(axis=1)
+                                    new_bl.sort_values()
+                                    nmean= new_bl.mean()
 
                                     prop = float(bp)/ 100
                                     #print(len(new[len(new)-int((1-prop)*len(new)):]))
-                                    good10 = new[len(new)-int(prop*len(new)):].mean()
-                                    bad10 = new[:int(prop*len(new))].mean()
-                                    worst  = new.max()
+                                    good10 = new_bl[len(new_bl)-int(prop*len(new_bl)):].mean()
+                                    bad10 = new[:int(prop*len(new_bl))].mean()
+                                    worst  = new_bl.min()
+                                    
                                     #print(worst)
-                                    #print(new)
+                                    
                                     if a =="simu":
                                         res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                                         simu=res
