@@ -7,14 +7,14 @@ if (len(sys.argv)!=2):
 	exit(1)
 
 
-proportions=[0,10,20,30,40]
+proportions=[0]#,10,20,30,40]
 bad_proportions=[0,10,20,30,40]
 netsize=[201]
 maxPara=[33]
 strategies = [2]
 chunksize=[20]
 algorithms=["AINA","simu","simu5"]
-experiment_range= range(1,2)
+experiment_range= range(1,11)
 folder=sys.argv[1]+os.sep+"out"
 file_suffix="-finalBatt.csv";
 fastC='1.0'
@@ -74,11 +74,11 @@ for size in netsize:
                                     new.sort_values()
                                     nmean= new.mean()
 
-                                    prop = float(p)/ 100
+                                    prop = float(bp)/ 100
                                     #print(len(new[len(new)-int((1-prop)*len(new)):]))
                                     good10 = new[len(new)-int(prop*len(new)):].mean()
                                     bad10 = new[:int(prop*len(new))].mean()
-                                    worst  = new.min()
+                                    worst  = new.max()
                                     #print(worst)
                                     #print(new)
                                     if a =="simu":
@@ -96,20 +96,20 @@ for size in netsize:
                                 del res['Categorie']
 
                                 # print(res)
-                                res.to_csv(folder+os.sep+str(p)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res.T, folder+os.sep+str(p)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                res.to_csv(folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
+                                Plot.plot_bar(res.T, folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
 
                                 columns = []
                                 for a2 in algorithms[1:]:
-                                    diff = pd.DataFrame( res["AINA"] - res[a2] )
+                                    diff = pd.DataFrame( res[a2]/ res["AINA"] )
                                     diff.rename(columns = {0:a2},inplace=True)
                                     columns.append(diff)
 
 
 
                                 res2 = pd.concat(columns,axis=1)
-                                res2.to_csv(folder+os.sep+str(p)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                res2.to_csv(folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
+                                Plot.plot_bar(res2.T, folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
                                 print(res2)
 
 
