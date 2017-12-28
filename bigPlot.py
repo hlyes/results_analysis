@@ -45,17 +45,17 @@ if len(sys.argv) != 2:
 
 folder=sys.argv[1]
 
-algorithms=["AINA","simu","simu5"]
+algorithms=["AINA","simu"]#,"simu5"]
 sizes=[201]
-chunkCounts=[20]
-repartions=[0,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
-bad_repartition=[0,10,20,30,40]
+chunkCounts=[10]
+repartions=[0]#,10,20,30,40]#,"10bw", "20bw" ,"30bw" ,"40bw"]
+bad_repartition=[10,20,30,40]
 maxNodes=[33]
-maxExp=10
+maxExp=2
 fastC=[1.0]
 strategies=[2]
 APMax=[1]
-D2DMax=[20] 
+D2DMax=[10] 
 
 """
 AP STATE: -AP.csv

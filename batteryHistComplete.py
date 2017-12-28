@@ -16,7 +16,7 @@ chunksize=[20]
 algorithms=["AINA","simu","simu5"]
 experiment_range= range(1,10)
 folder=sys.argv[1]+os.sep+"out"
-file_suffix="-finalBatt.csv";
+file_suffix="-finalBatt.csv"
 fastC='1.0'
 fc=float(fastC)
 APmax = [1]
@@ -47,7 +47,6 @@ for size in netsize:
                                             try:
                                                 df =pd.read_csv(f,sep=",")
                                             except pd.io.common.EmptyDataError as e:
-
                                                 print("Empty data error for : "+ f)
                                             else:
                                                 dfs.append(df)
@@ -109,29 +108,6 @@ for size in netsize:
 
                                 res2 = pd.concat(columns,axis=1)
                                 res2 = res2/60
-                                res2.to_csv(folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res2.T, folder+os.sep+str(p)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais périphériques (%)'})
+                                res2.to_csv(folder+os.sep+str(bp)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
+                                Plot.plot_bar(res2.T, folder+os.sep+str(bp)+os.sep+"battHist-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais périphériques (%)'})
                                 print(res2)
-
-
-
-                            # keys=difs.keys()
-                            # keys.sort()
-
-
-                            # vals=[]
-                            # for d in keys:
-                            #	 difs[d].rename(columns={0:str(d)+"%"}, inplace=True)
-                            #	 key=str(d)+"%"
-                            #	 val=[key]
-                            #	 for v in difs[d].values:
-                            #		 val.append(v[0]/3600)
-                            #	 vals.append(val)
-
-                            # out = pd.DataFrame(columns=["% de mauvais",'Moyenne','Mauvais','Pire'],data=vals)
-                            # #out = out/3600
-                            # out.rename(columns={0:"10%",1:"20%"},inplace=True)
-                            # #out.reindex(out.index.drop(1))
-                            # out.index=out[out.columns[0]]
-                            # print(out)
-                            # #plot_hist(out,str(netsize)+"-"+str(maxPara)+"-batHist.eps","Difference de batterie restante (h)")
