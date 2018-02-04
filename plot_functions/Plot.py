@@ -113,7 +113,9 @@ class Plot(object):
 		plot.tick_params(color='black', labelcolor='black')
 		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
 		plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, top= False)
-		
+		plot.tick_params(axis='x', color='black')
+		plot.tick_params(axis='y', color='black')
+		#mpl.rc('axes',edgecolor='black')
 		font  = FontProperties()
 		font.set_size(14)
 		# a = gca()
@@ -134,9 +136,7 @@ class Plot(object):
 		
 		#plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
 		plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
-		plot.set_xlim([0,plot.get_xlim()[1]])
-		plot.tick_params(axis='x', colors='black')
-		plot.tick_params(axis='y', colors='black')
+		plot.set_xlim([plot.get_xlim()[0],plot.get_xlim()[1]])
 		mpl.rc('axes',edgecolor='black')
 		#mpl.rc('font',size=30)
 
@@ -158,7 +158,7 @@ class Plot(object):
 		fig.savefig(output_file,dpi=300)
 		plt.close()
 		gc.collect()
-		pass
+		return plot
 
 	@staticmethod
 	def plot_hist(df,output_file,params):
