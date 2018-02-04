@@ -34,8 +34,12 @@ for para in df.index.unique():
         par[idx]=para
         idx+=1
         dataframes = [pd.read_csv(f,sep=',') for f in filenames]
+        for df in dataframes:
+            df.index=df[df.columns[0]]
+            del df[df.columns[0]]
+        
         dfs = [df['Completed Nodes'] for df in dataframes]
-
+        
         res = pd.concat(dfs,axis=1)
         res = res.mean(axis=1)
         df_res.append(res)
@@ -44,7 +48,7 @@ cols={}
 for k in par.keys():
     cols[k]=str(par[k])+" noeuds" 
         
-print(cols)
+print(df_res)
 
 res = pd.concat(df_res,axis=1)
 res = res.fillna(method='ffill')

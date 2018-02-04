@@ -12,8 +12,7 @@ import gc
 import seaborn as sb
 from matplotlib.font_manager import FontProperties
 
-sb.set()
-sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
+sb.palplot(sb.color_palette("Set2", n_colors=8, desat=.5))
 sb.set_style("whitegrid",{"axes.grid":False})
 
 
@@ -82,7 +81,7 @@ def plot_lines2(df,output_file,yaxis_label):
     # font = {'style' : 'normal','weight' : 'bold','size'   : 25}
     # plt.rc('font', **font)
     plot.set_ylim([0,plot.get_ylim()[1]+5])
-    plot.set_xlim([0,plot.get_xlim()[1]])
+    plot.set_xlim([plot.get_xlim()[0],plot.get_xlim()[1]])
     plt.ylabel(yaxis_label)
     plt.xticks(rotation="horizontal")
     plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
@@ -306,6 +305,11 @@ def parallel():
     plot_lines2(df,"parallel.eps","Périphériques complétés")
     pass
 
+def parallel2():
+    df = pd.read_csv('pd.csv')
+    plot_lines2(df,"parallelTC.eps","Temps de complétion(s)")
+    pass
+
 def nodestats():
     df = pd.read_csv('activity.csv')
     plot_hist2(df,'activity.eps','Nombre de périphériques')
@@ -319,6 +323,7 @@ connections()
 group_size()
 netsize()
 parallel()
+parallel2()
 #wi_fi()
 plot_chunksAP()
 plot_chunksNodes()
