@@ -157,7 +157,11 @@ class Plot(object):
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
+<<<<<<< HEAD
 		gc.collect()
+=======
+		
+>>>>>>> 1e590879bd3a81c24a00ce1bd3dc72a3a9ce92e8
 		return plot
 
 	@staticmethod
@@ -217,8 +221,7 @@ class Plot(object):
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
-		gc.collect()
-		pass
+		return plot
 
 
 	@staticmethod
@@ -277,8 +280,8 @@ class Plot(object):
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
-		gc.collect()
-		pass
+		
+		return plot
 
 
 	@staticmethod
@@ -292,6 +295,7 @@ class Plot(object):
 		rotation = Plot.getParam('rotation',params)
 		index_name = Plot.getParam('index_name',params)
 		pos_index = Plot.getParam('pos_index',params)
+		legend_on_top= Plot.getParam('legend_on_top',params)
 
 		if pos_index is None:
 			pos_index = 0
@@ -313,6 +317,8 @@ class Plot(object):
 
 		if rotation is None :
 			rotation = 'horizontal'
+		if (legend_on_top is None):
+			legend_on_top = False
 
 		if use_index:
 
@@ -323,6 +329,7 @@ class Plot(object):
 		plot = df.plot.bar(grid=False)
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
+<<<<<<< HEAD
 
 
 		plot.tick_params(color='black', labelcolor='black')
@@ -341,12 +348,16 @@ class Plot(object):
 			label.set_fontproperties(font)
 
 
+=======
+		if (legend_on_top):
+			plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left", mode="expand", borderaxespad=0, ncol=3)
+>>>>>>> 1e590879bd3a81c24a00ce1bd3dc72a3a9ce92e8
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
-		gc.collect()
-		pass
+		
+		return plot
 
 
 
@@ -357,5 +368,5 @@ class Plot(object):
 		, 'yticks' : [0, 1, 2] }
 		#params['yrotation'] = 'vertical'
 		Plot.plot_lines(df,output_file,params)
-		gc.collect()
+		
 	

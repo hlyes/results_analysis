@@ -8,7 +8,7 @@ if (len(sys.argv)!=2):
 
 
 proportions=[0,10,20,30,40]
-bad_proportions=[0,10,20,30,40]
+bad_proportions=[10,20,30,40]
 netsize=[201]
 maxPara=[33]
 strategies = [2]
@@ -64,30 +64,33 @@ for size in netsize:
                                         new.append(n)
                                     
 
-                                    new_ini = [n['InitialBattery'] for n in new]
-                                    new_final = [n['FinalBattery'] for n in new]
-                                    new_bl = [n['NetworkingBatteryLoss'] for n in new]
+                                    new_ini = [n['InitialBattery'] for n in new] # Initial battery for mobile devices
+                                    new_final = [n['FinalBattery'] for n in new] # Final battery for devices
+                                    new_bl = [n['NetworkingBatteryLoss'] for n in new] # networking battery loss
                                     
                                     new_final=pd.concat(new_final,axis=1) 
                                     ini = pd.concat(new_ini,axis=1)
                                     new = (new_final.mean(axis=1))
-                                    
+                                    new = new[new>0]
                                     minidx = new.idxmin(axis=1)
                                     new_bl = pd.concat(new_bl,axis=1)
                                     new_bl = new_bl.mean(axis=1)
-                                    new_bl.sort_values()
+                                    new_bl= new_bl.sort_values()
                                     nmean= new_bl.mean()
 
                                     prop = float(bp)/ 100
                                     #print(len(new[len(new)-int((1-prop)*len(new)):]))
                                     good10 = new_bl[len(new_bl)-int(prop*len(new_bl)):].mean()
-                                    bad10 = new[:int(prop*len(new_bl))].mean()
-                                    worst  = new_bl.min()
+                                    print (a," ",new_bl[:int(prop*len(new_bl))])
+                                    bad10 = new_bl[:int(prop*len(new_bl))].mean()
+                                    sup0 = new_bl[new_bl>0]
+                                    worst = new_bl[minidx]
+                                    #print (sup0)
+
                                     
-                                    #print(worst)
                                     
-                                    if a =="simu":
-                                        res= pd.DataFrame(columns=["Categorie","simu"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
+                                    if a =="AINA":
+                                        res= pd.DataFrame(columns=["Categorie","AINA"],data=[["Moyens",nmean],["Mauvais",bad10],["Pire",worst]])
                                         simu=res
                                     else:
                                         res= pd.DataFrame(columns=[a],data=[[nmean],[bad10],[worst]])
@@ -102,11 +105,11 @@ for size in netsize:
 
                                 # print(res)
                                 res.to_csv(folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res.T, folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                Plot.plot_bar(res.T, folder+os.sep+str(bp)+os.sep+"battHistCompNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Temps d'activité (s)",'xaxis_label':'Mauvais périphériques (%)'})
 
                                 columns = []
                                 for a2 in algorithms[1:]:
-                                    diff = pd.DataFrame( res[a2]/ res["AINA"] )
+                                    diff = (1 - pd.DataFrame( res[a2] / res["AINA"] )) * 100
                                     diff.rename(columns = {0:a2},inplace=True)
                                     columns.append(diff)
 
@@ -114,7 +117,7 @@ for size in netsize:
 
                                 res2 = pd.concat(columns,axis=1)
                                 res2.to_csv(folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".csv",sep=",")
-                                Plot.plot_bar(res2.T, folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Diff batterie restante(m)",'xaxis_label':'Mauvais appareils (pourcentage)'})
+                                Plot.plot_bar(res2.T, folder+os.sep+str(bp)+os.sep+"battHistNT-"+str(size)+"-"+str(maxN)+"-"+str(cs)+"-"+str(p)+'-'+str(bp)+"-"+str(fc)+".eps",{"yaxis_label":"Réduction de l'activité sur le réseau (%)",'xaxis_label':'Mauvais périphériques (%)'})
                                 print(res2)
 
 
