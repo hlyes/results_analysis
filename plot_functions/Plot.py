@@ -157,7 +157,6 @@ class Plot(object):
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
-<<<<<<< HEAD
 		gc.collect()
 =======
 		
