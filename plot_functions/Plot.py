@@ -7,17 +7,23 @@ import matplotlib as mpl
 
 mpl.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import gca
 import gc
+import seaborn as sb
+from matplotlib.font_manager import FontProperties
 
-# sb.set()
-# sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
-# sb.set_style("whitegrid",{"axes.grid":False})
+sb.set()
+sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
+sb.set_style("whitegrid",{"axes.grid":False})
+
+mpl.rcParams["xtick.color"] = 'black'
 
 #import seaborn as sb
 ##Default font of teh plots
 default_font = {'family' : 'normal' ,
 	'weight' : 'normal' ,
-	'size'  : 14 }
+	'size'  : 20 }
+#mpl.rc("font",**default_font)
 
 default_xaxis_label = 'Temps(s)'
 default_yaxis_label = 'Temps de complétion(s)'
@@ -80,7 +86,7 @@ class Plot(object):
 			use_index = False
 
 		if put_markers is None :
-			put_markers = False
+			put_markers = True
 
 		if xaxis_label is None :
 			xaxis_label = default_xaxis_label
@@ -94,27 +100,50 @@ class Plot(object):
 		if yrotation is None :
 			yrotation = 'horizontal'
 
-
 		if use_index == True:
 			columns = df.columns
 			index = df[columns[0]]
 			df.index = index
 			df.index.name = columns[0]
 			del df[columns[0]]
+		
 		# print(legends under the plot)
-		plot = df.plot(kind='line',x=df.index,use_index=True,grid=False)
+		plot = df.plot(kind='line',x=df.index,use_index=True,grid=False)#, foreground_color_grid)
 		lines = plot.get_lines()
+		plot.tick_params(color='black', labelcolor='black')
+		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, top= False)
+		
+		font  = FontProperties()
+		font.set_size(14)
+		# a = gca()
+		# a.set_xticklabels(a.get_xticks(), font)
+		# a.set_yticklabels(a.get_yticks(), font)
+		
+		for label in plot.get_xticklabels():
+			label.set_fontproperties(font)
 
+		for label in plot.get_yticklabels():
+			label.set_fontproperties(font)
+		
 		if (put_markers):
 			for i in range(len(lines)):
 				line = lines[i]
 				line.set_marker(markers[i])
 				line.set_markersize(6)
+		
 		#plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
 		plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
-		plt.ylabel(yaxis_label)
-		plt.xlabel(xaxis_label)
+		plot.set_xlim([0,plot.get_xlim()[1]])
+		plot.tick_params(axis='x', colors='black')
+		plot.tick_params(axis='y', colors='black')
+		mpl.rc('axes',edgecolor='black')
+		#mpl.rc('font',size=30)
+
+		plt.ylabel(yaxis_label,fontsize=16)
+		plt.xlabel(xaxis_label,fontsize=16)
 		plt.xticks(rotation=xrotation)
+		#plt.gca().yaxis.grid(True)
 
 		#if (xticks is not None) and (xticks_labels is not None):
 		#	plot.set_xticks(xticks)
@@ -166,6 +195,22 @@ class Plot(object):
 		plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
+
+		plot.tick_params(color='black', labelcolor='black')
+		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		
+		font  = FontProperties()
+		font.set_size(14)
+		# a = gca()
+		# a.set_xticklabels(a.get_xticks(), font)
+		# a.set_yticklabels(a.get_yticks(), font)
+		
+		for label in plot.get_xticklabels():
+			label.set_fontproperties(font)
+
+		for label in plot.get_yticklabels():
+			label.set_fontproperties(font)
+
 		#plot.set_ylim(plot.get_ylim()+25)
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
@@ -209,6 +254,24 @@ class Plot(object):
 		plot = df.plot.box(grid=False)
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
+
+		lines = plot.get_lines()
+		plot.tick_params(color='black', labelcolor='black')
+		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		
+		font  = FontProperties()
+		font.set_size(14)
+		# a = gca()
+		# a.set_xticklabels(a.get_xticks(), font)
+		# a.set_yticklabels(a.get_yticks(), font)
+		
+		for label in plot.get_xticklabels():
+			label.set_fontproperties(font)
+
+		for label in plot.get_yticklabels():
+			label.set_fontproperties(font)
+
+
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
@@ -260,6 +323,23 @@ class Plot(object):
 		plot = df.plot.bar(grid=False)
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
+
+
+		plot.tick_params(color='black', labelcolor='black')
+		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		
+		font  = FontProperties()
+		font.set_size(14)
+		# a = gca()
+		# a.set_xticklabels(a.get_xticks(), font)
+		# a.set_yticklabels(a.get_yticks(), font)
+		
+		for label in plot.get_xticklabels():
+			label.set_fontproperties(font)
+
+		for label in plot.get_yticklabels():
+			label.set_fontproperties(font)
+
 
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()

@@ -4,12 +4,21 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
+
 mpl.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import gca
+import gc
 import seaborn as sb
+from matplotlib.font_manager import FontProperties
+
 sb.set()
 sb.palplot(sb.color_palette("Set1", n_colors=8, desat=.5))
 sb.set_style("whitegrid",{"axes.grid":False})
+
+
+mpl.rcParams["xtick.color"] = 'black'
+
 
 def plot_lines_logscale(df,output_file,yaxis_label):
     columns = df.columns
@@ -21,13 +30,35 @@ def plot_lines_logscale(df,output_file,yaxis_label):
     #plot.set_xscale('log')
     plot.set_xticks(df[columns[0]])
     plot.set_xticklabels(df[columns[0]])
-    # font = {'style' : 'normal','weight' : 'bold','size'   : 25}
-    # plt.rc('font', **font)
-    plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+25])
+    plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
     plt.ylabel(yaxis_label)
+    plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+    font  = FontProperties()
+    font.set_size(14)
+    # a = gca()
+    # a.set_xticklabels(a.get_xticks(), font)
+    # a.set_yticklabels(a.get_yticks(), font)
+    
+    for label in plot.get_xticklabels():
+        label.set_fontproperties(font)
+
+    for label in plot.get_yticklabels():
+        label.set_fontproperties(font)
+    
+    #plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+   # plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    plot.tick_params(axis='x', colors='black')
+    plot.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+    #mpl.rc('font',size=30)
+    xaxis_label = index.name
+    plt.ylabel(yaxis_label,fontsize=16)
+    plt.xlabel(xaxis_label,fontsize=16)
+    
     plt.xticks(rotation="horizontal")
     fig = plt.gcf()
-    fig.set_size_inches(6 , 4)
+    fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
     return plot
 
@@ -50,13 +81,36 @@ def plot_lines2(df,output_file,yaxis_label):
     #plot.set_xticklabels(df[columns[0]])
     # font = {'style' : 'normal','weight' : 'bold','size'   : 25}
     # plt.rc('font', **font)
-    plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+25])
+    plot.set_ylim([0,plot.get_ylim()[1]+5])
+    plot.set_xlim([0,plot.get_xlim()[1]])
     plt.ylabel(yaxis_label)
     plt.xticks(rotation="horizontal")
+    plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+    font  = FontProperties()
+    font.set_size(14)
+    # a = gca()
+    # a.set_xticklabels(a.get_xticks(), font)
+    # a.set_yticklabels(a.get_yticks(), font)
+    
+    for label in plot.get_xticklabels():
+        label.set_fontproperties(font)
 
+    for label in plot.get_yticklabels():
+        label.set_fontproperties(font)
+    
+    #plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    #plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    plot.tick_params(axis='x', colors='black')
+    plot.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+    #mpl.rc('font',size=30)
+    xaxis_label = index.name
+    plt.ylabel(yaxis_label,fontsize=16)
+    plt.xlabel(xaxis_label,fontsize=16)
 
     fig = plt.gcf()
-    fig.set_size_inches(6 , 4)
+    fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
 
 
@@ -82,10 +136,33 @@ def plot_lines(df,output_file,yaxis_label):
     plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+25])
     plt.ylabel(yaxis_label)
     plt.xticks(rotation="horizontal")
+    plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, top = False)
+    font  = FontProperties()
+    font.set_size(14)
+    # a = gca()
+    # a.set_xticklabels(a.get_xticks(), font)
+    # a.set_yticklabels(a.get_yticks(), font)
+    
+    for label in plot.get_xticklabels():
+        label.set_fontproperties(font)
 
+    for label in plot.get_yticklabels():
+        label.set_fontproperties(font)
+    
+    #plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    plot.tick_params(axis='x', colors='black')
+    plot.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+    #mpl.rc('font',size=30)
+    xaxis_label = index.name
+    plt.ylabel(yaxis_label,fontsize=15)
+    plt.xlabel(xaxis_label,fontsize=15)
+    
 
     fig = plt.gcf()
-    fig.set_size_inches(6 , 4)
+    fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
 
 
@@ -96,11 +173,24 @@ def plot_hist(df,output_file,yaxis_label):
     #df = df[df.columns[1::]]
     plot = df.plot.hist(layout=(1,2))
     plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+5])
+
+    plot.tick_params(axis='x', colors='black')
+    plot.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+    #mpl.rc('font',size=30)
+    plt.ylabel(yaxis_label,fontsize=15)
+    plt.xlabel(xaxis_label,fontsize=15)
+    plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,down = True,  top = False)
+    plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plt.tick_params(axis='x', colors='black')
+    plt.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+
     plt.ylabel(yaxis_label)
     plot.set_ylim(plot.get_ylim()+25)
     plt.xticks(rotation="horizontal")
     fig = plt.gcf()
-    fig.set_size_inches(6 , 4)
+    fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
     return plot
 
@@ -116,12 +206,25 @@ def plot_hist2(df,output_file,yaxis_label,xaxis_label="Temps de communication (s
     #line_down = ax.bar(b_bins[:-1]+width, b_heights, width=width, facecolor='seagreen', label=df.columns[2],hatch='/')
     line_up = ax.bar(a_bins[:-1], a_heights, width=width, label=df.columns[1],hatch=".")
     line_down = ax.bar(b_bins[:-1]+width, b_heights, width=width, label=df.columns[2],hatch='/')
+    plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+
+    ax.tick_params(axis='x', colors='black')
+    ax.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
+    #mpl.rc('font',size=30)
+    plt.ylabel(yaxis_label,fontsize=15)
+    plt.xlabel(xaxis_label,fontsize=15)
+    plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+    plt.tick_params(axis='x', colors='black')
+    plt.tick_params(axis='y', colors='black')
     plt.legend([line_up, line_down], df.columns[1::])
     plt.ylabel(yaxis_label)
     plt.xlabel(xaxis_label)
     plt.xticks(rotation="horizontal")
     fig = plt.gcf()
-    fig.set_size_inches(6 , 4)
+    fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
     pass
 
@@ -137,6 +240,10 @@ def plot_hist3(df,output_file,yaxis_label):
     #plt.legend([line_up, line_down], df.columns[1::])
     plt.ylabel(yaxis_label)
     plt.xticks(rotation="horizontal")
+    plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+    plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+    plt.tick_params(axis='x', colors='black')
+    plt.tick_params(axis='y', colors='black')
     fig = plt.gcf()
     fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)

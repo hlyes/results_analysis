@@ -15,7 +15,7 @@ df = pd.concat([df["MaxPar"],df["Completion time"]],axis=1)
 df = df.groupby("MaxPar").mean()
 df.rename(columns={"Completion time":"EDWiN"},inplace=True)
 
-df.loc[:,"Wi-Fi seulement"] = pd.Series([1000,1000,1000,1000,1000,1000,1000,1000,1000], index = df.index)
+df.loc[:,"Sans D2D"] = pd.Series([1000,1000,1000,1000,1000,1000,1000,1000,1000], index = df.index)
 
 df.to_csv("pd.csv")
 print (df)
@@ -26,7 +26,7 @@ Plot.plot_lines(df,"pDegree.eps",{"xaxis_label":"Degré de parallélisme","yaxis
 df_res=[]
 idx=0
 par = {}
-chosen=[5,9,17,33]
+chosen=[9,17,33]
 for para in df.index.unique():
     if para in chosen:
         filenames = ["parallel/out/0/0/102400-2-101-"+str(para)+"-20-1-20-0-0-1.0-"+str(i)+"-nodesCompletion.csv" for i in range(1,2)]
@@ -63,9 +63,9 @@ res2*=100
 #res.loc[:,"Sequentiel"]=pd.Series(,index=res.index)
 
 # print(res.columns)
-res2.rename(columns={0:"Wi-Fi seulement"},inplace=True)
+res2.rename(columns={0:"Sans D2D"},inplace=True)
 res2.to_csv("para_CompletedNodes.csv",sep=",")
 
-Plot.plot_lines(res2,"pDegreeCompletion.eps",{"xaxis_label":"Temps (s)","yaxis_label":"Périphériques complétés"})
+Plot.plot_lines(res2,"pDegreeCompletion.eps",{"xaxis_label":"Temps (s)","yaxis_label":"Périphériques complétés",'put_markers':False})
     
 

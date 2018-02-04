@@ -97,7 +97,7 @@ for s in sizes:
 												finally:
 													if not df is None:
 														#UncommentLater
-														df.rename(columns={"APState":"Etat du serveur"},inplace=True)
+														df.rename(columns={"APState":"Etat du serveur","put_markers":False},inplace=True)
 														plot_lines_index_vertical(df,filepath+"-"+str(i)+"-AP.eps","Population")
 
 											completionDFS=[]
@@ -147,7 +147,7 @@ for s in sizes:
 												#Uncomment Later
 												compl.to_csv(filepath+"-completion.csv")
 												#plot_lines(compl,filepath+"-completion.eps","Appareils completes (pourcentage)")
-												params={'yaxis_label': 'Périphériques complétés (%)','use_index':False, 'xaxis_label':"Temps(s)"}
+												params={'yaxis_label': 'Périphériques complétés (%)','use_index':False, 'xaxis_label':"Temps(s)","put_markers":False}
 												print(len(compl))
 												print(params)
 												Plot.plot_lines(compl,filepath+'-completion.eps',params)
