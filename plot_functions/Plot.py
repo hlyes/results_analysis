@@ -115,7 +115,12 @@ class Plot(object):
 		plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, top= False)
 		plot.tick_params(axis='x', color='black')
 		plot.tick_params(axis='y', color='black')
-	
+
+		plot.spines['bottom'].set_color('black')
+		plot.spines['top'].set_color('black')
+		plot.spines['right'].set_color('black')
+		plot.spines['left'].set_color('black')
+		
 		mpl.rc('axes',edgecolor='black')
 		font  = FontProperties()
 		font.set_size(14)
@@ -153,7 +158,7 @@ class Plot(object):
 			plot.set_yticks(yticks)
 			plot.set_yticklabels(yticks_labels)
 
-
+		plt.legend(prop={'size': 12})
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
@@ -197,6 +202,24 @@ class Plot(object):
 		plt.ylabel(yaxis_label)
 		plt.xlabel(xaxis_label)
 
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+
+		plot.spines['bottom'].set_color('black')
+		plot.spines['top'].set_color('black')
+		plot.spines['right'].set_color('black')
+		plot.spines['left'].set_color('black')
+
+		plot.tick_params(axis='x', color='black')
+		plot.tick_params(axis='y', color='black')
+		mpl.rc('axes',edgecolor='black')
+		#mpl.rc('font',size=30)
+		plt.ylabel(yaxis_label,fontsize=15)
+		plt.xlabel(xaxis_label,fontsize=15)
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+		mpl.rc('axes',edgecolor='black')
+
 		plot.tick_params(color='black', labelcolor='black')
 		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
 		
@@ -214,12 +237,13 @@ class Plot(object):
 
 		#plot.set_ylim(plot.get_ylim()+25)
 		plt.xticks(rotation="horizontal")
+		plt.legend(prop={'size': 12})
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
 		gc.collect()
-		pass
+		return plot
 
 
 	@staticmethod
@@ -259,27 +283,46 @@ class Plot(object):
 		lines = plot.get_lines()
 		plot.tick_params(color='black', labelcolor='black')
 		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
-		
+
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+
+		plot.spines['bottom'].set_color('black')
+		plot.spines['top'].set_color('black')
+		plot.spines['right'].set_color('black')
+		plot.spines['left'].set_color('black')
+
+		plot.tick_params(axis='x', color='black')
+		plot.tick_params(axis='y', color='black')
+		mpl.rc('axes',edgecolor='black')
+		#mpl.rc('font',size=30)
+		plt.ylabel(yaxis_label,fontsize=15)
+		plt.xlabel(xaxis_label,fontsize=15)
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+		mpl.rc('axes',edgecolor='black')
+
 		font  = FontProperties()
 		font.set_size(14)
 		# a = gca()
 		# a.set_xticklabels(a.get_xticks(), font)
 		# a.set_yticklabels(a.get_yticks(), font)
-		
+		plot.axhline(y=0, color='black')
+		plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
 		for label in plot.get_xticklabels():
 			label.set_fontproperties(font)
 
 		for label in plot.get_yticklabels():
 			label.set_fontproperties(font)
-
-
+		
+		plt.legend(prop={'size': 12})
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		plt.close()
 		gc.collect()
-		pass
+		return plot
 
 
 	@staticmethod
@@ -328,7 +371,25 @@ class Plot(object):
 
 		plot.tick_params(color='black', labelcolor='black')
 		plot.yaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True, left = True)
-		
+
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+
+		plot.spines['bottom'].set_color('black')
+		plot.spines['top'].set_color('black')
+		plot.spines['right'].set_color('black')
+		plot.spines['left'].set_color('black')
+
+		plot.tick_params(axis='x', color='black')
+		plot.tick_params(axis='y', color='black')
+		mpl.rc('axes',edgecolor='black')
+		#mpl.rc('font',size=30)
+		plt.ylabel(yaxis_label,fontsize=15)
+		plt.xlabel(xaxis_label,fontsize=15)
+		plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
+		plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
+		mpl.rc('axes',edgecolor='black')
+		plt.legend(prop={'size': 12})		
 		font  = FontProperties()
 		font.set_size(14)
 		# a = gca()
@@ -340,14 +401,14 @@ class Plot(object):
 
 		for label in plot.get_yticklabels():
 			label.set_fontproperties(font)
-
-
+		plot.axhline(y=0, color='black')
+		plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",mode="expand", borderaxespad=0, ncol=3)
 		plt.xticks(rotation="horizontal")
 		fig = plt.gcf()
 		fig.set_size_inches(8 , 5)
 		fig.savefig(output_file,dpi=300)
 		gc.collect()
-		pass
+		return plot
 
 
 

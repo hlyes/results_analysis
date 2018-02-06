@@ -49,6 +49,7 @@ def plot_lines_logscale(df,output_file,yaxis_label):
    # plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
     plot.tick_params(axis='x', colors='black')
     plot.tick_params(axis='y', colors='black')
+    plot.legend( prop={'size': 12})
     mpl.rc('axes',edgecolor='black')
     #mpl.rc('font',size=30)
     xaxis_label = index.name
@@ -65,13 +66,13 @@ def plot_lines_logscale(df,output_file,yaxis_label):
 
 
 def plot_lines2(df,output_file,yaxis_label):
-
     columns = df.columns
     index = df[columns[0]]
+    del df[columns[0]]
     df.index = index
     df.index.name = columns[0]
     # Print legends under the plot
-    plot = df.plot(kind='line',x=columns[0],use_index=True)
+    plot = df.plot(kind='line',x=df.index,use_index=True)
     lines = plot.get_lines()
 
     plt.legend(handles=lines,loc=2)
@@ -88,6 +89,7 @@ def plot_lines2(df,output_file,yaxis_label):
     plot.xaxis.set_tick_params(direction = 'in', color = 'black', length=5 ,right = True,  top = False)
     font  = FontProperties()
     font.set_size(14)
+    plot.legend( prop={'size': 12})
     # a = gca()
     # a.set_xticklabels(a.get_xticks(), font)
     # a.set_yticklabels(a.get_yticks(), font)
@@ -151,6 +153,8 @@ def plot_lines(df,output_file,yaxis_label):
     
     #plot.set_ylim([plot.get_ylim()[0],plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
     plot.set_ylim([0,plot.get_ylim()[1]+int(plot.get_ylim()[1]*0.05)])
+    plot.legend( prop={'size': 12})
+
     plot.tick_params(axis='x', colors='black')
     plot.tick_params(axis='y', colors='black')
     mpl.rc('axes',edgecolor='black')
@@ -176,6 +180,7 @@ def plot_hist(df,output_file,yaxis_label):
     plot.tick_params(axis='x', colors='black')
     plot.tick_params(axis='y', colors='black')
     mpl.rc('axes',edgecolor='black')
+    plot.legend( prop={'size': 12})
     #mpl.rc('font',size=30)
     plt.ylabel(yaxis_label,fontsize=15)
     plt.xlabel(xaxis_label,fontsize=15)
@@ -203,28 +208,34 @@ def plot_hist2(df,output_file,yaxis_label,xaxis_label="Temps de communication (s
     width = (a_bins[1] - a_bins[0])/2
     #line_up = ax.bar(a_bins[:-1], a_heights, width=width, facecolor='cornflowerblue', label=df.columns[1],hatch=".")
     #line_down = ax.bar(b_bins[:-1]+width, b_heights, width=width, facecolor='seagreen', label=df.columns[2],hatch='/')
-    line_up = ax.bar(a_bins[:-1], a_heights, width=width, label=df.columns[1],hatch=".")
-    line_down = ax.bar(b_bins[:-1]+width, b_heights, width=width, label=df.columns[2],hatch='/')
+    line_up = ax.bar(a_bins[:-1], a_heights, width=width, label=df.columns[1])
+    line_down = ax.bar(b_bins[:-1]+width, b_heights, width=width, label=df.columns[2])
     plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
     plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
 
-    ax.tick_params(axis='x', colors='black')
-    ax.tick_params(axis='y', colors='black')
+    ax.spines['bottom'].set_color('black')
+    ax.spines['top'].set_color('black')
+    ax.spines['right'].set_color('black')
+    ax.spines['left'].set_color('black')
+
+    ax.tick_params(axis='x', color='black')
+    ax.tick_params(axis='y', color='black')
     mpl.rc('axes',edgecolor='black')
     #mpl.rc('font',size=30)
     plt.ylabel(yaxis_label,fontsize=15)
     plt.xlabel(xaxis_label,fontsize=15)
     plt.tick_params(axis="y",direction = 'in', color = 'black', length=5 ,right = True, left = True)
     plt.tick_params(axis="x",direction = 'in', color = 'black', length=5 ,right = True,  top = False)
-    plt.tick_params(axis='x', colors='black')
-    plt.tick_params(axis='y', colors='black')
+    mpl.rc('axes',edgecolor='black')
     plt.legend([line_up, line_down], df.columns[1::])
+    plt.legend(prop={'size': 12})
     plt.ylabel(yaxis_label)
     plt.xlabel(xaxis_label)
     plt.xticks(rotation="horizontal")
     fig = plt.gcf()
     fig.set_size_inches(8 , 5)
     fig.savefig(output_file,dpi=300)
+    
     pass
 
 def plot_hist3(df,output_file,yaxis_label):
@@ -235,7 +246,8 @@ def plot_hist3(df,output_file,yaxis_label):
     a_heights, a_bins = np.histogram(df[df.columns[1]],bins = bins)
     #b_heights, b_bins = np.histogram(df[df.columns[2]],bins = bins)
     width = (a_bins[1] - a_bins[0])/2
-    line_up = ax.bar(a_bins[:-1], a_heights, width=width, facecolor='cornflowerblue', label=df.columns[1],hatch=".")
+    line_up = ax.bar(a_bins[:-1], a_heights, width=width, facecolor='cornflowerblue', label=df.columns[1])
+    plt.legend( prop={'size': 12})
     #plt.legend([line_up, line_down], df.columns[1::])
     plt.ylabel(yaxis_label)
     plt.xticks(rotation="horizontal")
@@ -261,14 +273,14 @@ def plot_chunksNodes():
 
 
 def plot_chunksize():
-    df = pd.read_csv('chunksize.csv')
+    df = pd.read_csv('chunkSizeUnlimited.csv')
     plot_lines_logscale(df,"chunksize.eps","Temps de complétion(s)")
     pass
 
 
 def netsimu_vs_gruops():
     df = pd.read_csv('completion_netsimu-vs-groups.csv')
-    plot_lines2(df,"netsimu_vs_gruops.eps","Périphériques complétés")
+    plot_lines2(df,"netsimu_vs_groups.eps","Périphériques complétés")
     pass
 
 
@@ -301,7 +313,7 @@ def wi_fi():
     pass
 
 def parallel():
-    df = pd.read_csv('parallel.csv')
+    df = pd.read_csv('paraNew.csv')
     plot_lines2(df,"parallel.eps","Périphériques complétés")
     pass
 
